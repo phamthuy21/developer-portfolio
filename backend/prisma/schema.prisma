@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String   @id(map: "pk_users") @default(uuid()) @db.Uuid
+  email            String   @unique(map: "uq_users_email") @db.VarChar(255)
+  passwordHash     String   @map("password_hash") @db.VarChar(255)
+  refreshTokenHash String?  @map("refresh_token_hash") @db.VarChar(255)
+  fullName         String   @map("full_name") @db.VarChar(255)
+  avatarUrl        String?  @map("avatar_url") @db.VarChar(255)
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  projects Project[]
+  blogs    Blog[]
+
+  @@map("users")
+}
+
+model Project {
+  id          String    @id(map: "pk_projects") @default(uuid()) @db.Uuid
+  title       String    @db.VarChar(255)
+  slug        String    @unique(map: "uq_projects_slug") @db.VarChar(255)
+  description String    @db.Text
+  content     String    @db.Text
+  githubUrl   String?   @map("github_url") @db.VarChar(255)
+  liveUrl     String?   @map("live_url") @db.VarChar(255)
+  imageUrl    String?   @map("image_url") @db.VarChar(255)
+  featured    Boolean   @default(false)
+  published   Boolean   @default(false)
+  userId      String    @map("user_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz()
+
+  user   User           @relation(fields: [userId], references: [id], map: "fk_projects_users")
+  skills ProjectSkill[]
+
+  @@index([slug], map: "idx_projects_slug")
+  @@index([featured], map: "idx_projects_featured")
+  @@map("projects")
+}
+
+model Blog {
+  id         String    @id(map: "pk_blogs") @default(uuid()) @db.Uuid
+  title      String    @db.VarChar(255)
+  slug       String    @unique(map: "uq_blogs_slug") @db.VarChar(255)
+  excerpt    String    @db.Text
+  content    String    @db.Text
+  coverImage String?   @map("cover_image") @db.VarChar(255)
+  published  Boolean   @default(false)
+  userId     String    @map("user_id") @db.Uuid
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt  DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz()
+
+  user User @relation(fields: [userId], references: [id], map: "fk_blogs_users")
+
+  @@index([slug], map: "idx_blogs_slug")
+  @@index([published], map: "idx_blogs_published")
+  @@index([createdAt], map: "idx_blogs_created_at")
+  @@map("blogs")
+}
+
+model Skill {
+  id        String    @id(map: "pk_skills") @default(uuid()) @db.Uuid
+  name      String    @unique(map: "uq_skills_name") @db.VarChar(255)
+  slug      String    @unique(map: "uq_skills_slug") @db.VarChar(255)
+  iconUrl   String?   @map("icon_url") @db.VarChar(255)
+  category  String    @db.VarChar(255)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  projects    ProjectSkill[]
+  experiences ExperienceSkill[]
+
+  @@map("skills")
+}
+
+model ProjectSkill {
+  projectId  String   @map("project_id") @db.Uuid
+  skillId    String   @map("skill_id") @db.Uuid
+  assignedAt DateTime @default(now()) @map("assigned_at") @db.Timestamptz()
+
+  project Project @relation(fields: [projectId], references: [id], map: "fk_project_skills_projects")
+  skill   Skill   @relation(fields: [skillId], references: [id], map: "fk_project_skills_skills")
+
+  @@id([projectId, skillId], map: "pk_project_skills")
+  @@map("project_skills")
+}
+
+model Experience {
+  id          String    @id(map: "pk_experiences") @default(uuid()) @db.Uuid
+  company     String    @db.VarChar(255)
+  position    String    @db.VarChar(255)
+  location    String?   @db.VarChar(255)
+  startDate   DateTime  @map("start_date") @db.Timestamptz()
+  endDate     DateTime? @map("end_date") @db.Timestamptz()
+  current     Boolean   @default(false)
+  description String    @db.Text
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz()
+
+  skills ExperienceSkill[]
+
+  @@index([startDate], map: "idx_experiences_start_date")
+  @@map("experiences")
+}
+
+model ExperienceSkill {
+  experienceId String   @map("experience_id") @db.Uuid
+  skillId      String   @map("skill_id") @db.Uuid
+  assignedAt   DateTime @default(now()) @map("assigned_at") @db.Timestamptz()
+
+  experience Experience @relation(fields: [experienceId], references: [id], map: "fk_experience_skills_experiences")
+  skill      Skill      @relation(fields: [skillId], references: [id], map: "fk_experience_skills_skills")
+
+  @@id([experienceId, skillId], map: "pk_experience_skills")
+  @@map("experience_skills")
+}
+
+model Certificate {
+  id            String    @id(map: "pk_certificates") @default(uuid()) @db.Uuid
+  name          String    @db.VarChar(255)
+  issuer        String    @db.VarChar(255)
+  issueDate     DateTime  @map("issue_date") @db.Timestamptz()
+  credentialUrl String?   @map("credential_url") @db.VarChar(255)
+  imageUrl      String?   @map("image_url") @db.VarChar(255)
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt     DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@map("certificates")
+}
+
+model Message {
+  id        String    @id(map: "pk_messages") @default(uuid()) @db.Uuid
+  name      String    @db.VarChar(255)
+  email     String    @db.VarChar(255)
+  subject   String    @db.VarChar(255)
+  content   String    @db.Text
+  isRead    Boolean   @default(false) @map("is_read")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@index([isRead], map: "idx_messages_is_read")
+  @@map("messages")
+}
