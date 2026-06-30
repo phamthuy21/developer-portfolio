@@ -33,7 +33,7 @@ describe('CertificatesService', () => {
     }).compile();
 
     service = module.get<CertificatesService>(CertificatesService);
-    prisma = module.get(PrismaService) as any;
+    prisma = module.get(PrismaService);
   });
 
   it('should be defined', () => {
@@ -46,7 +46,9 @@ describe('CertificatesService', () => {
       prisma.certificate.findMany.mockResolvedValue(mockCertificates);
 
       const result = await service.findAll();
-      expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ id: '1' })]));
+      expect(result).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: '1' })]),
+      );
     });
   });
 
@@ -56,7 +58,9 @@ describe('CertificatesService', () => {
       prisma.certificate.findMany.mockResolvedValue(mockCertificates);
 
       const result = await service.findAllAdmin();
-      expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ id: '1' })]));
+      expect(result).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: '1' })]),
+      );
     });
   });
 
@@ -80,7 +84,11 @@ describe('CertificatesService', () => {
       const mockCertificate = { id: '1', name: 'Test Cert' };
       prisma.certificate.create.mockResolvedValue(mockCertificate);
 
-      const result = await service.create({ name: 'Test Cert', issuer: 'Issuer', issueDate: '2023-01-01T00:00:00.000Z' });
+      const result = await service.create({
+        name: 'Test Cert',
+        issuer: 'Issuer',
+        issueDate: '2023-01-01T00:00:00.000Z',
+      });
       expect(result).toEqual(expect.objectContaining({ id: '1' }));
     });
   });
@@ -89,10 +97,15 @@ describe('CertificatesService', () => {
     it('should update a certificate', async () => {
       const mockCertificate = { id: '1', name: 'Test Cert' };
       prisma.certificate.findUnique.mockResolvedValue(mockCertificate);
-      prisma.certificate.update.mockResolvedValue({ ...mockCertificate, name: 'Updated' });
+      prisma.certificate.update.mockResolvedValue({
+        ...mockCertificate,
+        name: 'Updated',
+      });
 
       const result = await service.update('1', { name: 'Updated' });
-      expect(result).toEqual(expect.objectContaining({ id: '1', name: 'Updated' }));
+      expect(result).toEqual(
+        expect.objectContaining({ id: '1', name: 'Updated' }),
+      );
     });
   });
 
@@ -103,9 +116,11 @@ describe('CertificatesService', () => {
       prisma.certificate.update.mockResolvedValue(mockCertificate);
 
       await service.remove('1');
-      expect(prisma.certificate.update).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({ deletedAt: expect.any(Date) }),
-      }));
+      expect(prisma.certificate.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ deletedAt: expect.any(Date) }),
+        }),
+      );
     });
   });
 
@@ -116,9 +131,11 @@ describe('CertificatesService', () => {
       prisma.certificate.update.mockResolvedValue(mockCertificate);
 
       await service.restore('1');
-      expect(prisma.certificate.update).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({ deletedAt: null }),
-      }));
+      expect(prisma.certificate.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ deletedAt: null }),
+        }),
+      );
     });
   });
 });

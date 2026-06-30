@@ -52,12 +52,21 @@ describe('AuthService', () => {
 
   describe('validateUser', () => {
     it('should return user object without password if validation succeeds', async () => {
-      const user = { id: '1', email: 'test@test.com', passwordHash: 'hash', role: 'Admin' };
+      const user = {
+        id: '1',
+        email: 'test@test.com',
+        passwordHash: 'hash',
+        role: 'Admin',
+      };
       usersService.findByEmail.mockResolvedValue(user as any);
       passwordService.comparePassword.mockResolvedValue(true);
 
       const result = await service.validateUser('test@test.com', 'password');
-      expect(result).toEqual({ id: '1', email: 'test@test.com', role: 'Admin' });
+      expect(result).toEqual({
+        id: '1',
+        email: 'test@test.com',
+        role: 'Admin',
+      });
     });
 
     it('should return null if user not found', async () => {
@@ -79,14 +88,19 @@ describe('AuthService', () => {
   describe('login', () => {
     it('should return access and refresh tokens', async () => {
       const user = { id: '1', email: 'test@test.com', role: 'Admin' };
-      jwtService.signAsync.mockResolvedValueOnce('access_token').mockResolvedValueOnce('refresh_token');
+      jwtService.signAsync
+        .mockResolvedValueOnce('access_token')
+        .mockResolvedValueOnce('refresh_token');
       passwordService.hashPassword.mockResolvedValue('hashed_refresh_token');
 
       const result = await service.login(user as any);
 
       expect(result.accessToken).toBe('access_token');
       expect(result.refreshToken).toBe('refresh_token');
-      expect(usersService.updateRefreshToken).toHaveBeenCalledWith('1', 'hashed_refresh_token');
+      expect(usersService.updateRefreshToken).toHaveBeenCalledWith(
+        '1',
+        'hashed_refresh_token',
+      );
     });
   });
 

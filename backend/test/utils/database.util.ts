@@ -6,7 +6,10 @@ const prisma = new PrismaClient();
 export const setupTestDatabase = async () => {
   // Push schema to the test database
   console.log('Running test database schema push...');
-  execSync('npx --yes dotenv-cli -e .env.test -- npx prisma db push --accept-data-loss', { stdio: 'inherit' });
+  execSync(
+    'npx --yes dotenv-cli -e .env.test -- npx prisma db push --accept-data-loss',
+    { stdio: 'inherit' },
+  );
 };
 
 export const cleanupTestDatabase = async () => {
@@ -20,9 +23,9 @@ export const cleanupTestDatabase = async () => {
     'certificates',
     'messages',
     'project_skills',
-    'experience_skills'
+    'experience_skills',
   ];
-  
+
   for (const tableName of tableNames) {
     try {
       await prisma.$executeRawUnsafe(`TRUNCATE TABLE "${tableName}" CASCADE;`);

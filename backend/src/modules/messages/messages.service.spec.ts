@@ -35,7 +35,7 @@ describe('MessagesService', () => {
     }).compile();
 
     service = module.get<MessagesService>(MessagesService);
-    prisma = module.get(PrismaService) as any;
+    prisma = module.get(PrismaService);
   });
 
   it('should be defined', () => {
@@ -44,10 +44,21 @@ describe('MessagesService', () => {
 
   describe('create', () => {
     it('should create a message', async () => {
-      const mockMessage = { id: '1', name: 'Test', email: 'test@example.com', subject: 'Hello', content: 'World' };
+      const mockMessage = {
+        id: '1',
+        name: 'Test',
+        email: 'test@example.com',
+        subject: 'Hello',
+        content: 'World',
+      };
       prisma.message.create.mockResolvedValue(mockMessage);
 
-      const result = await service.create({ name: 'Test', email: 'test@example.com', subject: 'Hello', content: 'World' });
+      const result = await service.create({
+        name: 'Test',
+        email: 'test@example.com',
+        subject: 'Hello',
+        content: 'World',
+      });
       expect(result).toEqual(expect.objectContaining({ id: '1' }));
     });
   });
@@ -59,7 +70,9 @@ describe('MessagesService', () => {
       prisma.message.findMany.mockResolvedValue(mockMessages);
 
       const result = await service.findAllAdmin({ page: 1, limit: 10 });
-      expect(result.data).toEqual(expect.arrayContaining([expect.objectContaining({ id: '1' })]));
+      expect(result.data).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: '1' })]),
+      );
       expect(result.meta.total).toBe(1);
     });
   });
@@ -95,7 +108,9 @@ describe('MessagesService', () => {
       prisma.message.update.mockResolvedValue({ ...mockMessage, isRead: true });
 
       const result = await service.updateStatus('1', { isRead: true });
-      expect(result).toEqual(expect.objectContaining({ id: '1', isRead: true }));
+      expect(result).toEqual(
+        expect.objectContaining({ id: '1', isRead: true }),
+      );
     });
   });
 
@@ -106,9 +121,11 @@ describe('MessagesService', () => {
       prisma.message.update.mockResolvedValue(mockMessage);
 
       await service.remove('1');
-      expect(prisma.message.update).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({ deletedAt: expect.any(Date) }),
-      }));
+      expect(prisma.message.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ deletedAt: expect.any(Date) }),
+        }),
+      );
     });
   });
 
@@ -119,9 +136,11 @@ describe('MessagesService', () => {
       prisma.message.update.mockResolvedValue(mockMessage);
 
       await service.restore('1');
-      expect(prisma.message.update).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({ deletedAt: null }),
-      }));
+      expect(prisma.message.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ deletedAt: null }),
+        }),
+      );
     });
   });
 });

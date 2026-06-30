@@ -2,7 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../../src/app.module';
-import { setupTestDatabase, cleanupTestDatabase, teardownTestDatabase, getTestPrismaClient } from '../utils/database.util';
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  teardownTestDatabase,
+  getTestPrismaClient,
+} from '../utils/database.util';
 import { createTestUser, createTestBlog } from '../fixtures';
 import { getAuthHeaders, generateAdminToken } from '../utils/auth.helper';
 import * as bcrypt from 'bcrypt';
@@ -19,7 +24,9 @@ describe('BlogsController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true }),
+    );
     app.setGlobalPrefix('api/v1');
     await app.init();
   });
@@ -31,8 +38,18 @@ describe('BlogsController (e2e)', () => {
     adminUser = await createTestUser(prisma, { passwordHash });
 
     // Seed some blogs
-    await createTestBlog(prisma, { title: 'Blog 1', slug: 'blog-1', published: true, userId: adminUser.id });
-    await createTestBlog(prisma, { title: 'Blog 2', slug: 'blog-2', published: false, userId: adminUser.id });
+    await createTestBlog(prisma, {
+      title: 'Blog 1',
+      slug: 'blog-1',
+      published: true,
+      userId: adminUser.id,
+    });
+    await createTestBlog(prisma, {
+      title: 'Blog 2',
+      slug: 'blog-2',
+      published: false,
+      userId: adminUser.id,
+    });
   });
 
   afterAll(async () => {
@@ -47,7 +64,7 @@ describe('BlogsController (e2e)', () => {
         .get('/api/v1/blogs')
         .expect(200);
       const duration = performance.now() - start;
-      
+
       expect(duration).toBeLessThan(500); // Smoke test for fast response
       expect(response.body.data.length).toBe(1); // Only published
       expect(response.body.data[0].title).toBe('Blog 1');
@@ -69,9 +86,7 @@ describe('BlogsController (e2e)', () => {
 
   describe('Admin API', () => {
     it('/api/v1/admin/blogs (GET) - Requires Auth', async () => {
-      await request(app.getHttpServer())
-        .get('/api/v1/admin/blogs')
-        .expect(401);
+      await request(app.getHttpServer()).get('/api/v1/admin/blogs').expect(401);
     });
 
     it('/api/v1/admin/blogs (GET) - Returns all blogs', async () => {

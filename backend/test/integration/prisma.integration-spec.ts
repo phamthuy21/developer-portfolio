@@ -1,6 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../src/prisma/prisma.service';
-import { setupTestDatabase, cleanupTestDatabase, teardownTestDatabase } from '../utils/database.util';
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  teardownTestDatabase,
+} from '../utils/database.util';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../src/app.module';
 import { PrismaCrudUtil } from '../../src/common/utils/prisma-crud.util';
@@ -50,7 +54,11 @@ describe('Prisma Integration (e2e)', () => {
       try {
         await prisma.$transaction(async (tx) => {
           await tx.skill.create({
-            data: { name: 'Tx Skill 3', slug: 'tx-skill-3', category: 'Backend' },
+            data: {
+              name: 'Tx Skill 3',
+              slug: 'tx-skill-3',
+              category: 'Backend',
+            },
           });
           throw new Error('Force rollback');
         });
@@ -66,7 +74,11 @@ describe('Prisma Integration (e2e)', () => {
   describe('Soft Deletes', () => {
     it('should set deletedAt and filter out deleted records', async () => {
       const skill = await prisma.skill.create({
-        data: { name: 'Soft Delete Skill', slug: 'sd-skill', category: 'Backend' },
+        data: {
+          name: 'Soft Delete Skill',
+          slug: 'sd-skill',
+          category: 'Backend',
+        },
       });
 
       // Soft delete
@@ -90,7 +102,12 @@ describe('Prisma Integration (e2e)', () => {
 
     it('should restore a soft deleted record', async () => {
       const skill = await prisma.skill.create({
-        data: { name: 'Restore Skill', slug: 'rs-skill', category: 'Backend', deletedAt: new Date() },
+        data: {
+          name: 'Restore Skill',
+          slug: 'rs-skill',
+          category: 'Backend',
+          deletedAt: new Date(),
+        },
       });
 
       // Restore

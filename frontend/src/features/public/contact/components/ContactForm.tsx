@@ -37,7 +37,7 @@ export function ContactForm() {
       }, 5000);
     },
     onError: (error: unknown) => {
-      // @ts-ignore
+      // @ts-expect-error -- error is typed as unknown; response is an axios shape
       toast.error(error.response?.data?.title || 'Failed to send message. Please try again.');
     },
   });

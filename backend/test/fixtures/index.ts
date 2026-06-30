@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 
-export const createTestUser = async (prisma: PrismaClient, overrides: any = {}) => {
+export const createTestUser = async (
+  prisma: PrismaClient,
+  overrides: any = {},
+) => {
   return prisma.user.create({
     data: {
       email: 'admin@example.com',
@@ -11,7 +14,10 @@ export const createTestUser = async (prisma: PrismaClient, overrides: any = {}) 
   });
 };
 
-export const createTestProject = async (prisma: PrismaClient, overrides: any = {}) => {
+export const createTestProject = async (
+  prisma: PrismaClient,
+  overrides: any = {},
+) => {
   return prisma.project.create({
     data: {
       title: 'Project 1',
@@ -25,7 +31,10 @@ export const createTestProject = async (prisma: PrismaClient, overrides: any = {
   });
 };
 
-export const createTestBlog = async (prisma: PrismaClient, overrides: any = {}) => {
+export const createTestBlog = async (
+  prisma: PrismaClient,
+  overrides: any = {},
+) => {
   return prisma.blog.create({
     data: {
       title: 'Blog 1',
@@ -38,7 +47,10 @@ export const createTestBlog = async (prisma: PrismaClient, overrides: any = {}) 
   });
 };
 
-export const createTestSkill = async (prisma: PrismaClient, overrides: any = {}) => {
+export const createTestSkill = async (
+  prisma: PrismaClient,
+  overrides: any = {},
+) => {
   return prisma.skill.create({
     data: {
       name: 'Test Skill',
@@ -49,7 +61,10 @@ export const createTestSkill = async (prisma: PrismaClient, overrides: any = {})
   });
 };
 
-export const createTestExperience = async (prisma: PrismaClient, overrides: any = {}) => {
+export const createTestExperience = async (
+  prisma: PrismaClient,
+  overrides: any = {},
+) => {
   return prisma.experience.create({
     data: {
       position: 'Test Position',
@@ -61,7 +76,10 @@ export const createTestExperience = async (prisma: PrismaClient, overrides: any 
   });
 };
 
-export const createTestCertificate = async (prisma: PrismaClient, overrides: any = {}) => {
+export const createTestCertificate = async (
+  prisma: PrismaClient,
+  overrides: any = {},
+) => {
   return prisma.certificate.create({
     data: {
       name: 'Test Certificate',
@@ -72,7 +90,10 @@ export const createTestCertificate = async (prisma: PrismaClient, overrides: any
   });
 };
 
-export const createTestMessage = async (prisma: PrismaClient, overrides: any = {}) => {
+export const createTestMessage = async (
+  prisma: PrismaClient,
+  overrides: any = {},
+) => {
   return prisma.message.create({
     data: {
       name: 'Test User',

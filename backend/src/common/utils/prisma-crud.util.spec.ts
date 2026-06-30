@@ -4,8 +4,12 @@ import { NotFoundException, ConflictException } from '@nestjs/common';
 describe('PrismaCrudUtil', () => {
   describe('throwIfNotFound', () => {
     it('should throw NotFoundException if entity is null', () => {
-      expect(() => PrismaCrudUtil.throwIfNotFound(null, 'User', '123')).toThrow(NotFoundException);
-      expect(() => PrismaCrudUtil.throwIfNotFound(null, 'User', '123')).toThrow('User with ID 123 not found');
+      expect(() => PrismaCrudUtil.throwIfNotFound(null, 'User', '123')).toThrow(
+        NotFoundException,
+      );
+      expect(() => PrismaCrudUtil.throwIfNotFound(null, 'User', '123')).toThrow(
+        'User with ID 123 not found',
+      );
     });
 
     it('should return entity if not null', () => {
@@ -32,12 +36,24 @@ describe('PrismaCrudUtil', () => {
   describe('throwIfDuplicate', () => {
     it('should throw ConflictException if entity exists', async () => {
       const mockModel = { count: jest.fn().mockResolvedValue(1) };
-      await expect(PrismaCrudUtil.throwIfDuplicate(mockModel, { email: 'test@test.com' }, 'Email exists')).rejects.toThrow(ConflictException);
+      await expect(
+        PrismaCrudUtil.throwIfDuplicate(
+          mockModel,
+          { email: 'test@test.com' },
+          'Email exists',
+        ),
+      ).rejects.toThrow(ConflictException);
     });
 
     it('should not throw if entity does not exist', async () => {
       const mockModel = { count: jest.fn().mockResolvedValue(0) };
-      await expect(PrismaCrudUtil.throwIfDuplicate(mockModel, { email: 'test@test.com' }, 'Email exists')).resolves.toBeUndefined();
+      await expect(
+        PrismaCrudUtil.throwIfDuplicate(
+          mockModel,
+          { email: 'test@test.com' },
+          'Email exists',
+        ),
+      ).resolves.toBeUndefined();
     });
   });
 
@@ -54,8 +70,8 @@ describe('PrismaCrudUtil', () => {
           limit: 10,
           totalPages: 10,
           hasNext: true,
-          hasPrevious: true
-        }
+          hasPrevious: true,
+        },
       });
     });
   });
@@ -65,7 +81,7 @@ describe('PrismaCrudUtil', () => {
       const result = PrismaCrudUtil.softDelete('1');
       expect(result).toEqual({
         where: { id: '1' },
-        data: { deletedAt: expect.any(Date) }
+        data: { deletedAt: expect.any(Date) },
       });
     });
   });
@@ -75,7 +91,7 @@ describe('PrismaCrudUtil', () => {
       const result = PrismaCrudUtil.restore('1');
       expect(result).toEqual({
         where: { id: '1' },
-        data: { deletedAt: null }
+        data: { deletedAt: null },
       });
     });
   });

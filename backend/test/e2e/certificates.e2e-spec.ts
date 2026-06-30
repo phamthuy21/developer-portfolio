@@ -2,7 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../../src/app.module';
-import { setupTestDatabase, cleanupTestDatabase, teardownTestDatabase, getTestPrismaClient } from '../utils/database.util';
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  teardownTestDatabase,
+  getTestPrismaClient,
+} from '../utils/database.util';
 import { createTestUser, createTestCertificate } from '../fixtures';
 import { getAuthHeaders } from '../utils/auth.helper';
 import * as bcrypt from 'bcrypt';
@@ -18,7 +23,9 @@ describe('CertificatesController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true }),
+    );
     app.setGlobalPrefix('api/v1');
     await app.init();
   });
@@ -27,7 +34,10 @@ describe('CertificatesController (e2e)', () => {
     await cleanupTestDatabase();
     const passwordHash = await bcrypt.hash('Password123!', 10);
     await createTestUser(prisma, { passwordHash });
-    await createTestCertificate(prisma, { name: 'AWS Certified', issuer: 'AWS' });
+    await createTestCertificate(prisma, {
+      name: 'AWS Certified',
+      issuer: 'AWS',
+    });
   });
 
   afterAll(async () => {
@@ -52,7 +62,7 @@ describe('CertificatesController (e2e)', () => {
         .send({
           name: 'GCP Certified',
           issuer: 'Google',
-          issueDate: new Date().toISOString()
+          issueDate: new Date().toISOString(),
         })
         .expect(201);
       expect(response.body.name).toBe('GCP Certified');

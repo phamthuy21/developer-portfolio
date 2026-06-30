@@ -2,7 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../../src/app.module';
-import { setupTestDatabase, cleanupTestDatabase, teardownTestDatabase, getTestPrismaClient } from '../utils/database.util';
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  teardownTestDatabase,
+  getTestPrismaClient,
+} from '../utils/database.util';
 import { createTestUser, createTestProject } from '../fixtures';
 import { getAuthHeaders, generateAdminToken } from '../utils/auth.helper';
 import * as bcrypt from 'bcrypt';
@@ -19,7 +24,9 @@ describe('ProjectsController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true }),
+    );
     app.setGlobalPrefix('api/v1');
     await app.init();
   });
@@ -31,8 +38,18 @@ describe('ProjectsController (e2e)', () => {
     adminUser = await createTestUser(prisma, { passwordHash });
 
     // Seed some projects
-    await createTestProject(prisma, { title: 'Project 1', slug: 'project-1', published: true, userId: adminUser.id });
-    await createTestProject(prisma, { title: 'Project 2', slug: 'project-2', published: false, userId: adminUser.id });
+    await createTestProject(prisma, {
+      title: 'Project 1',
+      slug: 'project-1',
+      published: true,
+      userId: adminUser.id,
+    });
+    await createTestProject(prisma, {
+      title: 'Project 2',
+      slug: 'project-2',
+      published: false,
+      userId: adminUser.id,
+    });
   });
 
   afterAll(async () => {
@@ -47,7 +64,7 @@ describe('ProjectsController (e2e)', () => {
         .get('/api/v1/projects')
         .expect(200);
       const duration = performance.now() - start;
-      
+
       expect(duration).toBeLessThan(500); // Smoke test for fast response
       expect(response.body.data.length).toBe(1); // Only published
       expect(response.body.data[0].title).toBe('Project 1');

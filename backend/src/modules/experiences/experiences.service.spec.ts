@@ -41,7 +41,7 @@ describe('ExperiencesService', () => {
     }).compile();
 
     service = module.get<ExperiencesService>(ExperiencesService);
-    prisma = module.get(PrismaService) as any;
+    prisma = module.get(PrismaService);
   });
 
   it('should be defined', () => {
@@ -54,10 +54,14 @@ describe('ExperiencesService', () => {
       prisma.experience.findMany.mockResolvedValue(mockExperiences);
 
       const result = await service.findAll();
-      expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ id: '1' })]));
-      expect(prisma.experience.findMany).toHaveBeenCalledWith(expect.objectContaining({
-        where: { deletedAt: null },
-      }));
+      expect(result).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: '1' })]),
+      );
+      expect(prisma.experience.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { deletedAt: null },
+        }),
+      );
     });
   });
 
@@ -67,7 +71,9 @@ describe('ExperiencesService', () => {
       prisma.experience.findMany.mockResolvedValue(mockExperiences);
 
       const result = await service.findAllAdmin();
-      expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ id: '1' })]));
+      expect(result).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: '1' })]),
+      );
     });
   });
 
@@ -91,7 +97,15 @@ describe('ExperiencesService', () => {
       const mockExperience = { id: '1', company: 'Test', skills: [] };
       prisma.experience.create.mockResolvedValue(mockExperience);
 
-      const result = await service.create({ company: 'Test', position: 'Dev', location: 'Remote', startDate: '2023-01-01T00:00:00.000Z', current: true, description: 'Desc', skillIds: [] });
+      const result = await service.create({
+        company: 'Test',
+        position: 'Dev',
+        location: 'Remote',
+        startDate: '2023-01-01T00:00:00.000Z',
+        current: true,
+        description: 'Desc',
+        skillIds: [],
+      });
       expect(result).toEqual(expect.objectContaining({ id: '1' }));
     });
   });
@@ -100,10 +114,15 @@ describe('ExperiencesService', () => {
     it('should update an experience', async () => {
       const mockExperience = { id: '1', company: 'Test', skills: [] };
       prisma.experience.findUnique.mockResolvedValue(mockExperience);
-      prisma.experience.update.mockResolvedValue({ ...mockExperience, company: 'Updated' });
+      prisma.experience.update.mockResolvedValue({
+        ...mockExperience,
+        company: 'Updated',
+      });
 
       const result = await service.update('1', { company: 'Updated' });
-      expect(result).toEqual(expect.objectContaining({ id: '1', company: 'Updated' }));
+      expect(result).toEqual(
+        expect.objectContaining({ id: '1', company: 'Updated' }),
+      );
     });
   });
 
@@ -114,9 +133,11 @@ describe('ExperiencesService', () => {
       prisma.experience.update.mockResolvedValue(mockExperience);
 
       await service.remove('1');
-      expect(prisma.experience.update).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({ deletedAt: expect.any(Date) }),
-      }));
+      expect(prisma.experience.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ deletedAt: expect.any(Date) }),
+        }),
+      );
     });
   });
 
@@ -127,9 +148,11 @@ describe('ExperiencesService', () => {
       prisma.experience.update.mockResolvedValue(mockExperience);
 
       await service.restore('1');
-      expect(prisma.experience.update).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({ deletedAt: null }),
-      }));
+      expect(prisma.experience.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ deletedAt: null }),
+        }),
+      );
     });
   });
 });

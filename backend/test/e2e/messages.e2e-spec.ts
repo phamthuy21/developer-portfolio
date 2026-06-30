@@ -2,7 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../../src/app.module';
-import { setupTestDatabase, cleanupTestDatabase, teardownTestDatabase, getTestPrismaClient } from '../utils/database.util';
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  teardownTestDatabase,
+  getTestPrismaClient,
+} from '../utils/database.util';
 import { createTestUser, createTestMessage } from '../fixtures';
 import { getAuthHeaders } from '../utils/auth.helper';
 import * as bcrypt from 'bcrypt';
@@ -18,7 +23,9 @@ describe('MessagesController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true }),
+    );
     app.setGlobalPrefix('api/v1');
     await app.init();
   });
@@ -27,7 +34,12 @@ describe('MessagesController (e2e)', () => {
     await cleanupTestDatabase();
     const passwordHash = await bcrypt.hash('Password123!', 10);
     await createTestUser(prisma, { passwordHash });
-    await createTestMessage(prisma, { name: 'Alice', email: 'alice@test.com', subject: 'Hello', content: 'Hi' });
+    await createTestMessage(prisma, {
+      name: 'Alice',
+      email: 'alice@test.com',
+      subject: 'Hello',
+      content: 'Hi',
+    });
   });
 
   afterAll(async () => {
@@ -43,7 +55,7 @@ describe('MessagesController (e2e)', () => {
           name: 'Bob',
           email: 'bob@test.com',
           subject: 'Question',
-          content: 'How do you do?'
+          content: 'How do you do?',
         })
         .expect(201);
       expect(response.body.name).toBe('Bob');

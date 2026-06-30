@@ -39,7 +39,7 @@ describe('ProjectsService', () => {
     }).compile();
 
     service = module.get<ProjectsService>(ProjectsService);
-    prisma = module.get(PrismaService) as any;
+    prisma = module.get(PrismaService);
   });
 
   it('should be defined', () => {
@@ -53,28 +53,42 @@ describe('ProjectsService', () => {
       prisma.project.findMany.mockResolvedValue(mockProjects as any);
 
       const result = await service.findAll({ page: 1, limit: 10 });
-      expect(result.data).toEqual([{
-        id: '1', title: 'Test', skills: []
-      }]);
-      expect(prisma.project.findMany).toHaveBeenCalledWith(expect.objectContaining({
-        where: expect.objectContaining({ published: true, deletedAt: null }),
-      }));
+      expect(result.data).toEqual([
+        {
+          id: '1',
+          title: 'Test',
+          skills: [],
+        },
+      ]);
+      expect(prisma.project.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({ published: true, deletedAt: null }),
+        }),
+      );
     });
   });
 
   describe('findBySlug', () => {
     it('should return a published project by slug', async () => {
-      const mockProject = { id: '1', slug: 'test', published: true, skills: [] };
+      const mockProject = {
+        id: '1',
+        slug: 'test',
+        published: true,
+        skills: [],
+      };
       prisma.project.findFirst.mockResolvedValue(mockProject as any);
 
       const result = await service.findBySlug('test');
-      expect(result).toEqual(expect.objectContaining({ id: '1', slug: 'test', skills: [] }));
+      expect(result).toEqual(
+        expect.objectContaining({ id: '1', slug: 'test', skills: [] }),
+      );
     });
 
     it('should throw NotFoundException if not found', async () => {
       prisma.project.findFirst.mockResolvedValue(null);
-      await expect(service.findBySlug('unknown')).rejects.toThrow('Project with slug unknown not found');
+      await expect(service.findBySlug('unknown')).rejects.toThrow(
+        'Project with slug unknown not found',
+      );
     });
   });
-
 });

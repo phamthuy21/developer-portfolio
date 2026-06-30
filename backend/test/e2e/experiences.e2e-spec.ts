@@ -2,7 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../../src/app.module';
-import { setupTestDatabase, cleanupTestDatabase, teardownTestDatabase, getTestPrismaClient } from '../utils/database.util';
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  teardownTestDatabase,
+  getTestPrismaClient,
+} from '../utils/database.util';
 import { createTestUser, createTestExperience } from '../fixtures';
 import { getAuthHeaders } from '../utils/auth.helper';
 import * as bcrypt from 'bcrypt';
@@ -18,7 +23,9 @@ describe('ExperiencesController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true }),
+    );
     app.setGlobalPrefix('api/v1');
     await app.init();
   });
@@ -27,7 +34,10 @@ describe('ExperiencesController (e2e)', () => {
     await cleanupTestDatabase();
     const passwordHash = await bcrypt.hash('Password123!', 10);
     await createTestUser(prisma, { passwordHash });
-    await createTestExperience(prisma, { company: 'Tech Corp', position: 'Developer' });
+    await createTestExperience(prisma, {
+      company: 'Tech Corp',
+      position: 'Developer',
+    });
   });
 
   afterAll(async () => {
@@ -59,7 +69,7 @@ describe('ExperiencesController (e2e)', () => {
           company: 'New Corp',
           position: 'Senior Developer',
           startDate: new Date().toISOString(),
-          description: 'Desc'
+          description: 'Desc',
         })
         .expect(201);
       expect(response.body.company).toBe('New Corp');

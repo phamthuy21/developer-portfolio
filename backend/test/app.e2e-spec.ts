@@ -4,7 +4,11 @@ import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { swaggerConfig } from './../src/config/swagger.config';
 import { SwaggerModule } from '@nestjs/swagger';
-import { setupTestDatabase, cleanupTestDatabase, teardownTestDatabase } from './utils/database.util';
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  teardownTestDatabase,
+} from './utils/database.util';
 
 describe('AppController & Swagger (e2e)', () => {
   let app: INestApplication;
@@ -16,7 +20,9 @@ describe('AppController & Swagger (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true }),
+    );
     app.setGlobalPrefix('api/v1');
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup('api/v1/docs', app, document);
@@ -46,7 +52,7 @@ describe('AppController & Swagger (e2e)', () => {
     Object.keys(schema.paths).forEach((path) => {
       Object.keys(schema.paths[path]).forEach((method) => {
         const operation = schema.paths[path][method];
-        
+
         // Exclude root and docs from specific rules if needed, but here we check typical api endpoints
         if (path.includes('/api/v1')) {
           expect(operation.tags).toBeDefined();

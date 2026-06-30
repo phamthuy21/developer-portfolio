@@ -2,7 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../../src/app.module';
-import { setupTestDatabase, cleanupTestDatabase, teardownTestDatabase, getTestPrismaClient } from '../utils/database.util';
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  teardownTestDatabase,
+  getTestPrismaClient,
+} from '../utils/database.util';
 import { createTestUser, createTestSkill } from '../fixtures';
 import { getAuthHeaders } from '../utils/auth.helper';
 import * as bcrypt from 'bcrypt';
@@ -18,7 +23,9 @@ describe('SkillsController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true }),
+    );
     app.setGlobalPrefix('api/v1');
     await app.init();
   });
@@ -30,8 +37,16 @@ describe('SkillsController (e2e)', () => {
     const admin = await createTestUser(prisma, { passwordHash });
 
     // Seed some skills
-    await createTestSkill(prisma, { name: 'React', slug: 'react', category: 'Frontend' });
-    await createTestSkill(prisma, { name: 'Node.js', slug: 'nodejs', category: 'Backend' });
+    await createTestSkill(prisma, {
+      name: 'React',
+      slug: 'react',
+      category: 'Frontend',
+    });
+    await createTestSkill(prisma, {
+      name: 'Node.js',
+      slug: 'nodejs',
+      category: 'Backend',
+    });
   });
 
   afterAll(async () => {
@@ -44,7 +59,7 @@ describe('SkillsController (e2e)', () => {
       const response = await request(app.getHttpServer())
         .get('/api/v1/skills')
         .expect(200);
-      
+
       expect(Object.keys(response.body).length).toBe(2);
       expect(response.body.Backend.length).toBe(1);
       expect(response.body.Frontend.length).toBe(1);
@@ -74,7 +89,7 @@ describe('SkillsController (e2e)', () => {
         .send({
           name: 'PostgreSQL',
           slug: 'postgresql',
-          category: 'Database'
+          category: 'Database',
         })
         .expect(201);
 
