@@ -21,6 +21,7 @@ export class MessagesService {
     email: true,
     subject: true,
     content: true,
+    isRead: true,
     createdAt: true,
   } satisfies Prisma.MessageSelect;
 
@@ -73,6 +74,13 @@ export class MessagesService {
       page,
       limit,
     );
+  }
+
+  async getUnreadCount(): Promise<{ count: number }> {
+    const count = await this.prisma.message.count({
+      where: { isRead: false, deletedAt: null },
+    });
+    return { count };
   }
 
   async findOneAdmin(id: string): Promise<MessageResponseDto> {

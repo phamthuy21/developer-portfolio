@@ -64,3 +64,8 @@ Error responses adhere strictly to **RFC 7807 (Problem Details for HTTP APIs)** 
 - `404 Not Found`: Resource not found.
 - `409 Conflict`: Resource already exists (e.g., unique constraint violation).
 - `500 Internal Server Error`: An unexpected error occurred.
+
+## API Testing Standards
+- Every newly created endpoint MUST have corresponding E2E test coverage in `test/e2e/*.e2e-spec.ts`.
+- E2E tests must validate HTTP status codes, error payloads (RFC 7807), and standard JSON envelopes.
+- Admin APIs must be explicitly tested for `401 Unauthorized` responses when no token is provided, and `403 Forbidden` if a non-admin token is provided.

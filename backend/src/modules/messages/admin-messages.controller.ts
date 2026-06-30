@@ -43,6 +43,13 @@ export class AdminMessagesController {
     return this.messagesService.findAllAdmin(query);
   }
 
+  @Get('unread-count')
+  @ApiOperation({ summary: 'Admin: Get unread messages count' })
+  @ApiResponse({ status: 200, description: 'Unread messages count' })
+  async getUnreadCount(): Promise<{ count: number }> {
+    return this.messagesService.getUnreadCount();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Admin: Get message by ID' })
   @ApiResponse({ status: 200, type: MessageResponseDto })

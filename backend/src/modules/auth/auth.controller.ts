@@ -49,7 +49,7 @@ export class AuthController {
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async refresh(@Req() req, @Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshTokens(
-      req.user.sub,
+      req.user.id,
       refreshTokenDto.refreshToken,
     );
   }

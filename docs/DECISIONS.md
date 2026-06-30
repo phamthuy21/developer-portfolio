@@ -142,3 +142,55 @@ Phase 6 implements the authenticated Admin CMS APIs. The requirements dictated s
 **Consequences:**
 - **Positive:** Clear boundary between public and admin access control. Services remain DRY. Unified soft-delete strategy across the entire application.
 - **Negative:** Schema had to be altered mid-project to support the uniform requirement. Maintaining two controllers per domain requires more files.
+
+## ADR 009: Testing Strategy & Coverage (Phase 7)
+
+**Date:** 2026-06-30
+
+**Context:**
+As the backend features matured, a standardized testing infrastructure was needed. We had to decide the boundary between Unit Tests and Integration/E2E tests, particularly how to handle Prisma database interactions without excessive mocking overhead.
+
+**Decision:**
+- **Unit Tests:** Placed alongside service files (`*.service.spec.ts`). We use `jest.mock` and a custom `MockPrismaService` type to bypass the complex `$transaction` types and mock database calls strictly. Focus is on mapping, errors, and validation logic.
+- **Integration Tests:** Placed in `test/integration/`. We interact with a real PostgreSQL test database managed by `dotenv-cli` overriding `DATABASE_URL`. Data is truncated before each test. We specifically test Prisma functionality like Soft Deletes and Transactions here.
+- **E2E Tests:** Placed in `test/`. Real HTTP calls via `supertest` hitting controllers. Includes testing Swagger documentation validation (`/api/v1/docs-json`).
+- **CI/CD:** Configured `.github/workflows/ci.yml` to run a PostgreSQL service, perform `prisma migrate deploy`, and sequentially execute `test:cov`, `test:integration`, and `test:e2e` on every push.
+
+**Consequences:**
+- **Positive:** High confidence in production deployments. Prisma logic (which is hard to unit-test accurately) is thoroughly validated in integration/E2E tests.
+- **Negative:** E2E and integration tests require a running database, meaning local test execution relies on Docker being active.
+
+
+## ADR 010: Frontend Architecture (Phase 8)
+
+**Date:** 2026-06-30
+
+**Context:**
+Phase 8 focused on building the Admin Dashboard for the portfolio. The project required a scalable, maintainable frontend architecture utilizing Next.js 15, React 19, and TanStack Query, adhering strictly to the API contracts developed in earlier backend phases.
+
+**Decision:**
+- **Feature-Based Architecture:** The frontend was organized into src/features/{module} containing api/, components/, schemas/, types/, and utils/. This isolated domain logic from global concerns.
+- **React Query + Axios:** Server state is managed by React Query with centralized query keys. Axios is configured with an interceptor pattern to handle global JWT authentication and automatic refresh-token rotation.
+- **App Router Separation:** Admin and Public routes are strictly separated using route groups: (app)/(admin) and (app)/(public). The (admin) layout handles strict unauthenticated redirects.
+- **Standardized Forms:** All data manipulation relies on react-hook-form paired with zod schema validation to ensure type safety and standard error messages.
+
+**Consequences:**
+- **Positive:** Highly modular and predictable codebase. Excellent separation of concerns.
+- **Negative:** Slightly more boilerplate required per feature (e.g. creating distinct query hooks, schemas, API client wrappers) compared to placing everything directly inside Next.js page components.
+
+## ADR 011: Public Portfolio Architecture & Rendering Strategy (Phase 9)
+
+**Date:** 2026-06-30
+
+**Context:**
+Phase 9 implemented the public-facing Portfolio website. To ensure maximum SEO, performance, and accessibility, an explicit rendering and UI architecture strategy was needed.
+
+**Decision:**
+- **Rendering Strategy:** Server Components are used by default (app/(public)/**/*.tsx). Client Components are restricted strictly to forms, interactive UI, and animations.
+- **Incremental Static Regeneration (ISR):** Public pages avoid strictly client-side fetching. Base pages (Home, About) revalidate every hour, while content lists (Projects, Blogs) and dynamic detail pages use ISR with a 300-second revalidation period. Dynamic paths implement generateStaticParams.
+- **Metadata & Structured Data:** Every public page utilizes the Next.js Metadata API and implements JSON-LD structured data (Person, Organization, BlogPosting, etc.) for optimal SEO.
+- **Public Design System:** Core layout primitives (Container, Section, PageHero) and standardized Feature State Components (*Loading, *Empty, *Error) are introduced to avoid layout duplication and ensure consistent states.
+
+**Consequences:**
+- **Positive:** Highly optimized for search engines, high performance due to pre-rendering and ISR, and a robust, accessible UI component system.
+- **Negative:** Requires deeper understanding of Next.js hydration and Server Component constraints when bridging server-fetched data to client-side interactivity (React Query).
