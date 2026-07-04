@@ -31,17 +31,13 @@ export function CertificateForm({ initialData }: CertificateFormProps) {
       issuer: initialData.issuer,
       issueDate: initialData.issueDate,
       credentialUrl: initialData.credentialUrl,
-      credentialId: initialData.credentialId,
       thumbnail: initialData.thumbnail,
-      order: initialData.order,
     } : {
       name: '',
       issuer: '',
       issueDate: '',
       credentialUrl: '',
-      credentialId: '',
       thumbnail: null,
-      order: 0,
     },
   });
 
@@ -81,24 +77,10 @@ export function CertificateForm({ initialData }: CertificateFormProps) {
           {form.formState.errors.issueDate && <p className="text-red-500 text-xs">{form.formState.errors.issueDate.message}</p>}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="credentialId">Credential ID</Label>
-            <Input id="credentialId" {...form.register('credentialId')} />
-            {form.formState.errors.credentialId && <p className="text-red-500 text-xs">{form.formState.errors.credentialId.message}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="credentialUrl">Credential URL</Label>
-            <Input id="credentialUrl" {...form.register('credentialUrl')} />
-            {form.formState.errors.credentialUrl && <p className="text-red-500 text-xs">{form.formState.errors.credentialUrl.message}</p>}
-          </div>
-        </div>
-
         <div className="space-y-2">
-            <Label htmlFor="order">Display Order</Label>
-            <Input id="order" type="number" {...form.register('order', { valueAsNumber: true })} />
-            {form.formState.errors.order && <p className="text-red-500 text-xs">{form.formState.errors.order.message}</p>}
+          <Label htmlFor="credentialUrl">Credential URL</Label>
+          <Input id="credentialUrl" {...form.register('credentialUrl')} />
+          {form.formState.errors.credentialUrl && <p className="text-red-500 text-xs">{form.formState.errors.credentialUrl.message}</p>}
         </div>
 
         <div className="flex justify-end space-x-4">

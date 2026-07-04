@@ -1,7 +1,8 @@
 import { apiClient } from '@/lib/api/client';
 import { Experience } from '@/features/admin/experiences/types';
+import { mapExperienceResponse } from '@/lib/utils/map-entities';
 
-export const getPublicExperiences = async () => {
-  const { data } = await apiClient.get<Experience[]>('/experiences');
-  return data;
+export const getPublicExperiences = async (): Promise<Experience[]> => {
+  const { data } = await apiClient.get<{ data: any[] }>('/experiences');
+  return data?.data ? data.data.map(mapExperienceResponse) : [];
 };

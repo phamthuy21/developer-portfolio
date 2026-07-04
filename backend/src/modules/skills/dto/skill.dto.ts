@@ -21,4 +21,7 @@ export class SkillResponseDto {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiPropertyOptional()
+  deletedAt?: Date | null;
 }

@@ -21,6 +21,7 @@ export class BlogsService {
     coverImage: true,
     createdAt: true,
     updatedAt: true,
+    deletedAt: true,
   } satisfies Prisma.BlogSelect;
 
   async findAll(
@@ -153,15 +154,23 @@ export class BlogsService {
     createBlogDto: CreateBlogDto,
     userId: string,
   ): Promise<BlogResponseDto> {
+    const slug =
+      createBlogDto.slug ||
+      createBlogDto.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+
     await PrismaCrudUtil.throwIfDuplicate(
       this.prisma.blog,
-      { slug: createBlogDto.slug },
-      `Blog with slug ${createBlogDto.slug} already exists`,
+      { slug },
+      `Blog with slug ${slug} already exists`,
     );
 
     const blog = await this.prisma.blog.create({
       data: {
         ...createBlogDto,
+        slug,
         userId,
       },
       select: this.blogSelect,
@@ -177,17 +186,28 @@ export class BlogsService {
     const existing = await this.prisma.blog.findUnique({ where: { id } });
     PrismaCrudUtil.throwIfNotFound(existing, 'Blog', id);
 
-    if (updateBlogDto.slug && updateBlogDto.slug !== existing!.slug) {
+    let slug = updateBlogDto.slug;
+    if (!slug && updateBlogDto.title) {
+      slug = updateBlogDto.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+    }
+
+    if (slug && slug !== existing!.slug) {
       await PrismaCrudUtil.throwIfDuplicate(
         this.prisma.blog,
-        { slug: updateBlogDto.slug },
-        `Blog with slug ${updateBlogDto.slug} already exists`,
+        { slug },
+        `Blog with slug ${slug} already exists`,
       );
     }
 
     const blog = await this.prisma.blog.update({
       where: { id },
-      data: updateBlogDto,
+      data: {
+        ...updateBlogDto,
+        ...(slug && { slug }),
+      },
       select: this.blogSelect,
     });
 

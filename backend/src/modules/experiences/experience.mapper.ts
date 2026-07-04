@@ -23,6 +23,7 @@ export class ExperienceMapper {
     response.description = experience.description!;
     response.createdAt = experience.createdAt!;
     response.updatedAt = experience.updatedAt!;
+    response.deletedAt = experience.deletedAt;
 
     response.skills =
       experience.skills?.map((es) => {

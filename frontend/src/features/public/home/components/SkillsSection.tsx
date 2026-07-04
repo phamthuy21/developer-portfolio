@@ -13,7 +13,17 @@ interface SkillsSectionProps {
 }
 
 export function SkillsSection({ skillsGroups }: SkillsSectionProps) {
-  if (!skillsGroups || skillsGroups.length === 0) {
+  if (!Array.isArray(skillsGroups)) {
+    console.error('[SkillsSection] Invalid skillsGroups — expected array, received:', skillsGroups);
+    return (
+      <Section>
+        <SectionTitle title="My Skills" subtitle="Technologies I work with" />
+        <EmptyState title="No skills found" description="Skills data is currently unavailable." />
+      </Section>
+    );
+  }
+
+  if (skillsGroups.length === 0) {
     return (
       <Section>
         <SectionTitle title="My Skills" subtitle="Technologies I work with" />
@@ -50,3 +60,4 @@ export function SkillsSection({ skillsGroups }: SkillsSectionProps) {
     </Section>
   );
 }
+

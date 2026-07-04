@@ -14,6 +14,7 @@ export class CertificateMapper {
     response.imageUrl = certificate.imageUrl;
     response.createdAt = certificate.createdAt!;
     response.updatedAt = certificate.updatedAt!;
+    response.deletedAt = certificate.deletedAt;
     return response;
   }
 }

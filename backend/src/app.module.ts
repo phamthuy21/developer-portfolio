@@ -18,6 +18,7 @@ import { ExperiencesModule } from './modules/experiences/experiences.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AuthModule } from './modules/auth/auth.module';
     CertificatesModule,
     MessagesModule,
     AuthModule,
+    DashboardModule,
   ],
   controllers: [],
   providers: [],

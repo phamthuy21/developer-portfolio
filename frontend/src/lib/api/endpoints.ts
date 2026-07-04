@@ -12,6 +12,7 @@ export const ENDPOINTS = {
     EXPERIENCES: '/admin/experiences',
     CERTIFICATES: '/admin/certificates',
     MESSAGES: '/admin/messages',
+    DASHBOARD: '/admin/dashboard',
   },
   PUBLIC: {
     PROJECTS: '/projects',

@@ -12,6 +12,7 @@ export class BlogMapper {
     response.coverImage = blog.coverImage;
     response.createdAt = blog.createdAt!;
     response.updatedAt = blog.updatedAt!;
+    response.deletedAt = blog.deletedAt;
     return response;
   }
 }

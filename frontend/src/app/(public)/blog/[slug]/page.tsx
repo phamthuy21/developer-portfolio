@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 export const revalidate = 300;
 
 interface BlogPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -26,10 +26,24 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+export async function generateMetadata(props: BlogPageProps): Promise<Metadata> {
+  const params = await props.params;
   try {
     const blog = await getPublicBlogBySlug(params.slug);
     if (!blog) return { title: 'Blog Not Found' };
+
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: blog.title,
+      description: blog.excerpt,
+      datePublished: blog.publishedAt || blog.createdAt,
+      dateModified: blog.updatedAt,
+      author: {
+        '@type': 'Person',
+        name: 'Developer Name',
+      },
+    };
 
     return {
       title: `${blog.title} | Blog`,
@@ -40,14 +54,18 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
         type: 'article',
         publishedTime: blog.publishedAt || blog.createdAt,
       },
+      other: {
+        'script:ld+json': JSON.stringify(jsonLd),
+      },
     };
   } catch (error) {
     return { title: 'Blog Not Found' };
   }
 }
 
-export default async function BlogDetailPage({ params }: BlogPageProps) {
-  let blog = null;
+export default async function BlogDetailPage(props: BlogPageProps) {
+  const params = await props.params;
+  let blog;
   try {
     blog = await getPublicBlogBySlug(params.slug);
   } catch (error) {
@@ -60,25 +78,6 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
 
   return (
     <article className="pt-24 pb-16">
-      {/* JSON-LD Structured Data for BlogPosting */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
-            headline: blog.title,
-            description: blog.excerpt,
-            datePublished: blog.publishedAt || blog.createdAt,
-            dateModified: blog.updatedAt,
-            author: {
-              '@type': 'Person',
-              name: 'Developer Name'
-            }
-          }),
-        }}
-      />
-
       <Container className="max-w-3xl">
         <AnimatedReveal>
           <Link href="/blog" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-8">

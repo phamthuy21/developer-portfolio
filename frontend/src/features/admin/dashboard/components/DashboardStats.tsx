@@ -4,7 +4,7 @@ import React from 'react';
 import { useDashboardStats } from '../api/dashboard.queries';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { FolderGit2, FileText, Code2, Briefcase, Award, MessageSquare } from 'lucide-react';
+import { FolderGit2, FileText, Code2, Briefcase, Award, MessageSquare, CheckCircle, FileEdit, Mailbox } from 'lucide-react';
 
 export function DashboardStats() {
   const { data, isLoading, error } = useDashboardStats();
@@ -19,15 +19,20 @@ export function DashboardStats() {
 
   const statCards = [
     { title: 'Total Projects', value: data?.totalProjects, icon: FolderGit2, color: 'text-blue-500' },
+    { title: 'Published Projects', value: data?.publishedProjects, icon: CheckCircle, color: 'text-green-500' },
+    { title: 'Draft Projects', value: data?.draftProjects, icon: FileEdit, color: 'text-yellow-500' },
     { title: 'Total Blogs', value: data?.totalBlogs, icon: FileText, color: 'text-purple-500' },
-    { title: 'Total Skills', value: data?.totalSkills, icon: Code2, color: 'text-green-500' },
-    { title: 'Total Experiences', value: data?.totalExperiences, icon: Briefcase, color: 'text-orange-500' },
-    { title: 'Total Certificates', value: data?.totalCertificates, icon: Award, color: 'text-yellow-500' },
+    { title: 'Published Blogs', value: data?.publishedBlogs, icon: CheckCircle, color: 'text-green-500' },
+    { title: 'Draft Blogs', value: data?.draftBlogs, icon: FileEdit, color: 'text-yellow-500' },
+    { title: 'Skills', value: data?.totalSkills, icon: Code2, color: 'text-teal-500' },
+    { title: 'Experiences', value: data?.totalExperiences, icon: Briefcase, color: 'text-orange-500' },
+    { title: 'Certificates', value: data?.totalCertificates, icon: Award, color: 'text-yellow-600' },
+    { title: 'Total Messages', value: data?.totalMessages, icon: Mailbox, color: 'text-blue-400' },
     { title: 'Unread Messages', value: data?.unreadMessages, icon: MessageSquare, color: 'text-red-500' },
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {statCards.map((stat, i) => (
         <Card key={i}>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">

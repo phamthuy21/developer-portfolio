@@ -5,7 +5,6 @@ export const blogSchema = z.object({
   excerpt: z.string().min(1, 'Excerpt is required'),
   content: z.string().min(1, 'Content is required'),
   thumbnail: z.string().nullable().optional(),
-  tags: z.array(z.string()).min(1, 'At least one tag is required'),
   isPublished: z.boolean(),
 });
 

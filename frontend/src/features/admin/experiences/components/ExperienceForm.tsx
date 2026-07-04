@@ -35,7 +35,6 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
       endDate: initialData.endDate,
       isCurrent: initialData.isCurrent,
       description: initialData.description,
-      order: initialData.order,
     } : {
       title: '',
       company: '',
@@ -44,7 +43,6 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
       endDate: null,
       isCurrent: false,
       description: '',
-      order: 0,
     },
   });
 
@@ -103,7 +101,7 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
         <div className="flex items-center space-x-2">
           <Checkbox
             id="isCurrent"
-            checked={form.watch('isCurrent')}
+            checked={form.watch('isCurrent') ?? false}
             onCheckedChange={(checked) => {
               form.setValue('isCurrent', checked as boolean);
               if (checked) form.setValue('endDate', null);
@@ -122,11 +120,7 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
           {form.formState.errors.description && <p className="text-red-500 text-xs">{form.formState.errors.description.message}</p>}
         </div>
 
-        <div className="space-y-2">
-            <Label htmlFor="order">Display Order</Label>
-            <Input id="order" type="number" {...form.register('order', { valueAsNumber: true })} />
-            {form.formState.errors.order && <p className="text-red-500 text-xs">{form.formState.errors.order.message}</p>}
-        </div>
+
 
         <div className="flex justify-end space-x-4">
           <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>

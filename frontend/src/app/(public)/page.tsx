@@ -10,6 +10,18 @@ import { getPublicSkills } from '@/features/public/skills/api/get-public-skills'
 // ISR Configuration: Revalidate this page every 1 hour
 export const revalidate = 3600;
 
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Developer Name',
+  jobTitle: 'Full-Stack Developer',
+  url: 'https://portfolio.example.com',
+  sameAs: [
+    'https://github.com/example',
+    'https://linkedin.com/in/example',
+  ],
+};
+
 export const metadata: Metadata = {
   title: 'Portfolio | Full-Stack Developer',
   description: 'Full-stack developer specializing in scalable web applications, React, Next.js, and Node.js.',
@@ -17,6 +29,9 @@ export const metadata: Metadata = {
     title: 'Portfolio | Full-Stack Developer',
     description: 'Full-stack developer specializing in scalable web applications, React, Next.js, and Node.js.',
     type: 'website',
+  },
+  other: {
+    'script:ld+json': JSON.stringify(personJsonLd),
   },
 };
 
@@ -33,27 +48,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* JSON-LD Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Person',
-            name: 'Developer Name',
-            jobTitle: 'Full-Stack Developer',
-            url: 'https://portfolio.example.com',
-            sameAs: [
-              'https://github.com/example',
-              'https://linkedin.com/in/example'
-            ]
-          }),
-        }}
-      />
-
       <HeroSection />
-      
-      {/* Dynamic Sections */}
       <FeaturedProjects projects={projects} />
       <SkillsSection skillsGroups={skills} />
       <LatestBlogs blogs={blogs} />

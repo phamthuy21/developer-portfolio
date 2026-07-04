@@ -24,6 +24,7 @@ export const useCreateExperience = () => {
     mutationFn: (data: ExperienceFormData) => experiencesApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_EXPERIENCES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -35,6 +36,7 @@ export const useUpdateExperience = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_EXPERIENCES] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_EXPERIENCES, variables.id] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -45,6 +47,7 @@ export const useDeleteExperience = () => {
     mutationFn: (id: string) => experiencesApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_EXPERIENCES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -54,6 +57,7 @@ export const useExperienceActions = () => {
   const invalidate = (id: string) => {
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_EXPERIENCES] });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_EXPERIENCES, id] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
   };
 
   const restoreMutation = useMutation({

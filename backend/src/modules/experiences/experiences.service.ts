@@ -21,6 +21,7 @@ export class ExperiencesService {
     description: true,
     createdAt: true,
     updatedAt: true,
+    deletedAt: true,
     skills: {
       select: {
         skill: {

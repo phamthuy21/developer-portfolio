@@ -17,8 +17,10 @@ export class ProjectMapper {
     response.liveUrl = project.liveUrl;
     response.imageUrl = project.imageUrl;
     response.featured = project.featured!;
+    response.published = project.published!;
     response.createdAt = project.createdAt!;
     response.updatedAt = project.updatedAt!;
+    response.deletedAt = project.deletedAt;
 
     response.skills =
       project.skills?.map((ps) => {

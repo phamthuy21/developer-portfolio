@@ -26,7 +26,12 @@ async function bootstrap() {
 
   // Security & Optimization
   app.use(helmet());
-  app.enableCors();
+  app.enableCors({
+    origin: configService.get<string>('app.frontendUrl'),
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
   app.use(compression());
 
   // Versioning and Prefix

@@ -8,7 +8,6 @@ export const experienceSchema = z.object({
   endDate: z.string().nullable().optional(),
   isCurrent: z.boolean(),
   description: z.string().min(1, 'Description is required'),
-  order: z.number().int(),
 });
 
 export type ExperienceFormData = z.infer<typeof experienceSchema>;

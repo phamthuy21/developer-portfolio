@@ -1,6 +1,7 @@
 import { apiClient } from '@/lib/api/client';
-import { PaginatedResponse } from '@/types/api';
+import { PaginatedResponse, ApiResponse } from '@/types/api';
 import { Project } from '@/features/admin/projects/types';
+import { mapProjectResponse } from '@/lib/utils/map-project';
 
 export interface GetPublicProjectsParams {
   page?: number;
@@ -9,11 +10,14 @@ export interface GetPublicProjectsParams {
 }
 
 export const getPublicProjects = async (params?: GetPublicProjectsParams) => {
-  const { data } = await apiClient.get<PaginatedResponse<Project>>('/projects', { params });
-  return data;
+  const { data } = await apiClient.get<PaginatedResponse<any>>('/projects', { params });
+  return {
+    ...data,
+    data: data.data.map(mapProjectResponse),
+  };
 };
 
 export const getPublicProjectBySlug = async (slug: string) => {
-  const { data } = await apiClient.get<Project>(`/projects/${slug}`);
-  return data;
+  const { data } = await apiClient.get<ApiResponse<any>>(`/projects/${slug}`);
+  return data?.data ? mapProjectResponse(data.data) : null;
 };

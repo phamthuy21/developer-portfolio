@@ -1,11 +1,11 @@
 export interface Skill {
   id: string;
   name: string;
+  slug: string;
   category: string;
-  icon: string | null;
-  proficiency: number;
-  order: number;
+  iconUrl: string | null | undefined;
   createdAt: string;
   updatedAt: string;
-  deletedAt: string | null;
+  deletedAt?: string | null;
 }
+

@@ -32,14 +32,12 @@ export function BlogForm({ initialData }: BlogFormProps) {
       excerpt: initialData.excerpt,
       content: initialData.content,
       thumbnail: initialData.thumbnail,
-      tags: initialData.tags || [],
       isPublished: initialData.isPublished,
     } : {
       title: '',
       excerpt: '',
       content: '',
       thumbnail: null,
-      tags: [],
       isPublished: false,
     },
   });
@@ -84,24 +82,12 @@ export function BlogForm({ initialData }: BlogFormProps) {
           {form.formState.errors.content && <p className="text-red-500 text-xs">{form.formState.errors.content.message}</p>}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="tags">Tags (comma separated)</Label>
-          <Input 
-            id="tags" 
-            placeholder="TypeScript, Next.js, Design"
-            onChange={(e) => {
-              const val = e.target.value;
-              form.setValue('tags', val.split(',').map(s => s.trim()).filter(Boolean));
-            }}
-            defaultValue={form.getValues('tags')?.join(', ')}
-          />
-          {form.formState.errors.tags && <p className="text-red-500 text-xs">{form.formState.errors.tags.message}</p>}
-        </div>
+
 
         <div className="flex items-center space-x-2">
           <Checkbox
             id="isPublished"
-            checked={form.watch('isPublished')}
+            checked={form.watch('isPublished') ?? false}
             onCheckedChange={(checked) => form.setValue('isPublished', checked as boolean)}
           />
           <Label htmlFor="isPublished">Published</Label>

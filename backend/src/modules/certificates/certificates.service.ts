@@ -19,10 +19,12 @@ export class CertificatesService {
     imageUrl: true,
     createdAt: true,
     updatedAt: true,
+    deletedAt: true,
   } satisfies Prisma.CertificateSelect;
 
   async findAll(): Promise<CertificateResponseDto[]> {
     const certificates = await this.prisma.certificate.findMany({
+      where: { deletedAt: null },
       select: this.certificateSelect,
       orderBy: {
         issueDate: 'desc',

@@ -48,6 +48,9 @@ export class ExperienceResponseDto {
   @ApiProperty()
   updatedAt: Date;
 
+  @ApiPropertyOptional()
+  deletedAt?: Date | null;
+
   @ApiProperty({ type: [ExperienceSkillDto] })
   skills: ExperienceSkillDto[];
 }

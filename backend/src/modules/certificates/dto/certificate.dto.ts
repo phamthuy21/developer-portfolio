@@ -24,4 +24,7 @@ export class CertificateResponseDto {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiPropertyOptional()
+  deletedAt?: Date | null;
 }

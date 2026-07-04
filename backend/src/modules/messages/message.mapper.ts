@@ -10,6 +10,7 @@ export class MessageMapper {
     response.subject = message.subject!;
     response.content = message.content!;
     response.createdAt = message.createdAt!;
+    response.deletedAt = message.deletedAt;
     response.isRead = message.isRead!;
     return response;
   }

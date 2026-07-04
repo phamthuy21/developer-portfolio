@@ -24,6 +24,7 @@ export const useCreateCertificate = () => {
     mutationFn: (data: CertificateFormData) => certificatesApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_CERTIFICATES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -35,6 +36,7 @@ export const useUpdateCertificate = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_CERTIFICATES] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_CERTIFICATES, variables.id] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -45,6 +47,7 @@ export const useDeleteCertificate = () => {
     mutationFn: (id: string) => certificatesApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_CERTIFICATES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -54,6 +57,7 @@ export const useCertificateActions = () => {
   const invalidate = (id: string) => {
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_CERTIFICATES] });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_CERTIFICATES, id] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
   };
 
   const restoreMutation = useMutation({

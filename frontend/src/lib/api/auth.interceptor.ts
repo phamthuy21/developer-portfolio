@@ -3,6 +3,7 @@ import { tokenStorage } from '../storage/token.storage';
 import { env } from '../config/env';
 import { ENDPOINTS } from './endpoints';
 import axios from 'axios';
+import { UnauthorizedError } from './api-error';
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -76,12 +77,20 @@ export const setupAuthInterceptor = (client: AxiosInstance) => {
           
           originalRequest.headers.Authorization = `Bearer ${newTokens.accessToken}`;
           return client(originalRequest);
-        } catch (refreshError) {
-          processQueue(refreshError, null);
+        } catch {
+          const authError = new UnauthorizedError('Session expired. Please log in again.', {
+            type: 'https://httpstatuses.com/401',
+            title: 'Unauthorized',
+            status: 401,
+            detail: 'Your session has expired or is invalid.',
+            instance: originalRequest.url || '/auth/refresh',
+            timestamp: new Date().toISOString(),
+          });
+          processQueue(authError, null);
           isRefreshing = false;
           tokenStorage.clearTokens();
           if (typeof window !== 'undefined') window.location.href = '/login';
-          return Promise.reject(refreshError);
+          return Promise.reject(authError);
         }
       }
 

@@ -1,15 +1,14 @@
 export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
+  ADMIN = 'Admin',
+  USER = 'User',
 }
 
+/** Shape of the JWT payload signed by the backend (sub, email, role). */
 export interface User {
-  id: string;
+  sub: string;
   email: string;
-  firstName?: string;
-  lastName?: string;
+  name?: string;
   role: Role;
-  isActive: boolean;
 }
 
 export interface AuthTokens {
@@ -21,3 +20,4 @@ export interface AuthSession {
   user: User;
   tokens: AuthTokens;
 }
+

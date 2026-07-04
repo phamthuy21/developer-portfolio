@@ -1,7 +1,13 @@
 import { apiClient } from '@/lib/api/client';
 import { Certificate } from '@/features/admin/certificates/types';
+import { mapCertificateResponse } from '@/lib/utils/map-entities';
 
-export const getPublicCertificates = async () => {
-  const { data } = await apiClient.get<Certificate[]>('/certificates');
-  return data;
+export const getPublicCertificates = async (): Promise<Certificate[]> => {
+  const { data } = await apiClient.get<{ data: any[] }>('/certificates');
+  
+  if (!data || !Array.isArray(data.data)) {
+    return [];
+  }
+  
+  return data.data.map(mapCertificateResponse);
 };

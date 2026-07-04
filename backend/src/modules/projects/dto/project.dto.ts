@@ -62,10 +62,16 @@ export class ProjectResponseDto {
   featured: boolean;
 
   @ApiProperty()
+  published: boolean;
+
+  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiPropertyOptional()
+  deletedAt?: Date | null;
 
   @ApiProperty({ type: [ProjectSkillDto] })
   skills: ProjectSkillDto[];

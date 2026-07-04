@@ -23,6 +23,7 @@ export const useDeleteMessage = () => {
     mutationFn: (id: string) => messagesApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_MESSAGES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -32,6 +33,7 @@ export const useMessageActions = () => {
   const invalidate = (id: string) => {
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_MESSAGES] });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_MESSAGES, id] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
   };
 
   const updateStatusMutation = useMutation({

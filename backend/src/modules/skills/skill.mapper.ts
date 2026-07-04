@@ -11,6 +11,7 @@ export class SkillMapper {
     response.category = skill.category!;
     response.createdAt = skill.createdAt!;
     response.updatedAt = skill.updatedAt!;
+    response.deletedAt = skill.deletedAt;
     return response;
   }
 }

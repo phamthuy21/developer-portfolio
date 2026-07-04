@@ -83,7 +83,6 @@ describe('Prisma Integration (e2e)', () => {
 
       // Soft delete
       await prisma.skill.update({
-        where: { id: skill.id },
         ...PrismaCrudUtil.softDelete(skill.id),
       });
 
@@ -112,7 +111,6 @@ describe('Prisma Integration (e2e)', () => {
 
       // Restore
       await prisma.skill.update({
-        where: { id: skill.id },
         ...PrismaCrudUtil.restore(skill.id),
       });
 

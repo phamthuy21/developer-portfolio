@@ -18,6 +18,7 @@ export class SkillsService {
     category: true,
     createdAt: true,
     updatedAt: true,
+    deletedAt: true,
   } satisfies Prisma.SkillSelect;
 
   async findAll(): Promise<Record<string, SkillResponseDto[]>> {
@@ -61,14 +62,21 @@ export class SkillsService {
   }
 
   async create(createSkillDto: CreateSkillDto): Promise<SkillResponseDto> {
+    const slug =
+      createSkillDto.slug ||
+      createSkillDto.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+
     await PrismaCrudUtil.throwIfDuplicate(
       this.prisma.skill,
-      { OR: [{ slug: createSkillDto.slug }, { name: createSkillDto.name }] },
+      { OR: [{ slug }, { name: createSkillDto.name }] },
       `Skill with this name or slug already exists`,
     );
 
     const skill = await this.prisma.skill.create({
-      data: createSkillDto,
+      data: { ...createSkillDto, slug },
       select: this.skillSelect,
     });
 
@@ -82,17 +90,22 @@ export class SkillsService {
     const existing = await this.prisma.skill.findUnique({ where: { id } });
     PrismaCrudUtil.throwIfNotFound(existing, 'Skill', id);
 
+    let slug = updateSkillDto.slug;
+    if (!slug && updateSkillDto.name) {
+      slug = updateSkillDto.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+    }
+
     if (
-      (updateSkillDto.slug && updateSkillDto.slug !== existing!.slug) ||
+      (slug && slug !== existing!.slug) ||
       (updateSkillDto.name && updateSkillDto.name !== existing!.name)
     ) {
       await PrismaCrudUtil.throwIfDuplicate(
         this.prisma.skill,
         {
-          OR: [
-            { slug: updateSkillDto.slug || '' },
-            { name: updateSkillDto.name || '' },
-          ],
+          OR: [{ slug: slug || '' }, { name: updateSkillDto.name || '' }],
         },
         `Skill with this name or slug already exists`,
       );
@@ -100,7 +113,7 @@ export class SkillsService {
 
     const skill = await this.prisma.skill.update({
       where: { id },
-      data: updateSkillDto,
+      data: { ...updateSkillDto, ...(slug && { slug }) },
       select: this.skillSelect,
     });
 

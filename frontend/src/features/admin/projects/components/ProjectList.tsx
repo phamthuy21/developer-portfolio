@@ -10,7 +10,8 @@ import { Pagination } from '@/components/common/Pagination';
 import { DeleteDialog } from '@/components/common/DeleteDialog';
 import { Project } from '../types';
 import Link from 'next/link';
-import { Edit, Trash2, Star, Globe } from 'lucide-react';
+import { Edit, Trash2, Star, Globe, Image as ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 import { ROUTES } from '@/constants/routes';
 import { toast } from 'sonner';
 
@@ -36,6 +37,25 @@ export function ProjectList() {
   };
 
   const columns = [
+    {
+      key: 'image',
+      label: 'Image',
+      render: (p: Project) => (
+        <div className="w-10 h-10 rounded overflow-hidden bg-muted flex items-center justify-center shrink-0">
+          {p.thumbnail ? (
+            <Image
+              src={p.thumbnail}
+              alt={p.title}
+              width={40}
+              height={40}
+              className="object-cover w-full h-full"
+            />
+          ) : (
+            <ImageIcon className="w-4 h-4 text-muted-foreground" />
+          )}
+        </div>
+      )
+    },
     { key: 'title', label: 'Title' },
     { 
       key: 'status', 

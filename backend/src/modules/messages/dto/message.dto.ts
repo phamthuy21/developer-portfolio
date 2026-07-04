@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateMessageDto {
@@ -44,6 +44,9 @@ export class MessageResponseDto {
 
   @ApiProperty()
   createdAt: Date;
+
+  @ApiPropertyOptional()
+  deletedAt?: Date | null;
 }
 
 import { IsOptional, IsBoolean, IsIn } from 'class-validator';

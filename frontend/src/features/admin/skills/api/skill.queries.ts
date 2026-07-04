@@ -24,6 +24,7 @@ export const useCreateSkill = () => {
     mutationFn: (data: SkillFormData) => skillsApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_SKILLS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -35,6 +36,7 @@ export const useUpdateSkill = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_SKILLS] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_SKILLS, variables.id] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -45,6 +47,7 @@ export const useDeleteSkill = () => {
     mutationFn: (id: string) => skillsApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_SKILLS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -54,6 +57,7 @@ export const useSkillActions = () => {
   const invalidate = (id: string) => {
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_SKILLS] });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_SKILLS, id] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
   };
 
   const restoreMutation = useMutation({

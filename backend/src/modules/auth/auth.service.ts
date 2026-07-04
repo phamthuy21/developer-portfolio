@@ -41,6 +41,7 @@ export class AuthService {
     const payload: JwtPayload = {
       sub: user.id,
       email: user.email,
+      name: user.fullName,
       role: Role.Admin,
     }; // Defaulting to Admin for now based on 'single admin' note
     const tokens = await this.generateTokens(payload);
@@ -69,6 +70,7 @@ export class AuthService {
     const payload: JwtPayload = {
       sub: user.id,
       email: user.email,
+      name: user.fullName,
       role: Role.Admin,
     };
     const tokens = await this.generateTokens(payload);

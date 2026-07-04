@@ -15,13 +15,13 @@ export class CreateProjectDto {
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({ description: 'URL-friendly slug, unique' })
+  @ApiPropertyOptional({ description: 'URL-friendly slug, unique' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
     message: 'Slug must be lowercase alphanumeric with hyphens',
   })
-  slug: string;
+  slug?: string;
 
   @ApiProperty({ description: 'Short description of the project' })
   @IsString()
@@ -63,4 +63,10 @@ export class CreateProjectDto {
   @IsArray()
   @IsUUID('4', { each: true })
   skillIds?: string[];
+
+  @ApiPropertyOptional({ description: 'Array of skill names to link/create' })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  technologies?: string[];
 }

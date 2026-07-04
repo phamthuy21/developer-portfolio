@@ -25,14 +25,15 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
 
   const isEditing = !!initialData;
 
+  const [techString, setTechString] = React.useState(initialData?.technologies?.join(', ') || '');
+
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
     defaultValues: initialData ? {
       title: initialData.title,
       description: initialData.description,
       content: initialData.content,
-      thumbnail: initialData.thumbnail,
-      images: initialData.images || [],
+      thumbnail: initialData.thumbnail || '',
       technologies: initialData.technologies || [],
       repositoryUrl: initialData.repositoryUrl || '',
       liveUrl: initialData.liveUrl || '',
@@ -42,8 +43,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
       title: '',
       description: '',
       content: '',
-      thumbnail: null,
-      images: [],
+      thumbnail: '',
       technologies: [],
       repositoryUrl: '',
       liveUrl: '',
@@ -92,6 +92,33 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
           {form.formState.errors.content && <p className="text-red-500 text-xs">{form.formState.errors.content.message}</p>}
         </div>
 
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="thumbnail">Image URL</Label>
+            <Input id="thumbnail" placeholder="https://example.com/image.jpg" {...form.register('thumbnail')} />
+            {form.formState.errors.thumbnail && <p className="text-red-500 text-xs">{form.formState.errors.thumbnail.message}</p>}
+          </div>
+          
+          <div className="relative w-full max-w-sm aspect-video bg-muted rounded-md overflow-hidden border">
+            {form.watch('thumbnail') ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={form.watch('thumbnail') as string}
+                alt="Preview"
+                className="object-cover w-full h-full"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>';
+                  (e.target as HTMLImageElement).classList.add('p-8');
+                }}
+              />
+            ) : (
+              <div className="flex items-center justify-center w-full h-full text-muted-foreground text-sm">
+                No image provided
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="repositoryUrl">Repository URL</Label>
@@ -111,11 +138,12 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
           <Input 
             id="technologies" 
             placeholder="React, NestJS, Postgres"
+            value={techString}
             onChange={(e) => {
               const val = e.target.value;
+              setTechString(val);
               form.setValue('technologies', val.split(',').map(s => s.trim()).filter(Boolean));
             }}
-            defaultValue={form.getValues('technologies')?.join(', ')}
           />
           {form.formState.errors.technologies && <p className="text-red-500 text-xs">{form.formState.errors.technologies.message}</p>}
         </div>
@@ -124,7 +152,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
           <div className="flex items-center space-x-2">
             <Checkbox
               id="isPublished"
-              checked={form.watch('isPublished')}
+              checked={form.watch('isPublished') ?? false}
               onCheckedChange={(checked) => form.setValue('isPublished', checked as boolean)}
             />
             <Label htmlFor="isPublished">Published</Label>
@@ -132,7 +160,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
           <div className="flex items-center space-x-2">
             <Checkbox
               id="isFeatured"
-              checked={form.watch('isFeatured')}
+              checked={form.watch('isFeatured') ?? false}
               onCheckedChange={(checked) => form.setValue('isFeatured', checked as boolean)}
             />
             <Label htmlFor="isFeatured">Featured</Label>

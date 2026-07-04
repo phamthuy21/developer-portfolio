@@ -194,3 +194,21 @@ Phase 9 implemented the public-facing Portfolio website. To ensure maximum SEO, 
 **Consequences:**
 - **Positive:** Highly optimized for search engines, high performance due to pre-rendering and ISR, and a robust, accessible UI component system.
 - **Negative:** Requires deeper understanding of Next.js hydration and Server Component constraints when bridging server-fetched data to client-side interactivity (React Query).
+
+## ADR 012: Environment-Driven CORS Policy (Hotfix)
+
+**Date:** 2026-07-01
+
+**Context:**
+The frontend login page was blocked by the browser's CORS policy because the backend called `app.enableCors()` with no arguments, which defaults to `origin: '*'`. Modern browsers reject credentialed requests (`withCredentials: true`) when the server responds with a wildcard `Access-Control-Allow-Origin` header.
+
+**Decision:**
+- Replace `app.enableCors()` with an explicit CORS configuration object in `main.ts`.
+- Expose `app.frontendUrl` from `app.config.ts`, sourced from the `FRONTEND_URL` environment variable (defaulting to `http://localhost:3000` for local development).
+- Set `credentials: true`, an explicit `origin` (never `'*'`), and restrict `methods` and `allowedHeaders` to the minimum required by the API.
+- Document `FRONTEND_URL` in `.env.example` so all future environments (staging, production) supply the correct value without code changes.
+
+**Consequences:**
+- **Positive:** Browser no longer blocks credentialed requests. The allowed origin is fully configurable per environment through a single environment variable.
+- **Negative:** None. The change is additive and backwards-compatible; the default value covers existing local development workflows.
+

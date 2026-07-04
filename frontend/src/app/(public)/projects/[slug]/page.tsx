@@ -13,7 +13,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 export const revalidate = 300;
 
 interface ProjectPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -27,10 +27,24 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+export async function generateMetadata(props: ProjectPageProps): Promise<Metadata> {
+  const params = await props.params;
   try {
     const project = await getPublicProjectBySlug(params.slug);
     if (!project) return { title: 'Project Not Found' };
+
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      name: project.title,
+      description: project.description,
+      url: `https://portfolio.example.com/projects/${project.slug}`,
+      image: project.thumbnail,
+      author: {
+        '@type': 'Person',
+        name: 'Developer Name',
+      },
+    };
 
     return {
       title: `${project.title} | Projects`,
@@ -40,14 +54,20 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
         description: project.description,
         images: project.thumbnail ? [{ url: project.thumbnail }] : [],
       },
+      other: {
+        'script:ld+json': JSON.stringify(jsonLd),
+      },
     };
   } catch (error) {
     return { title: 'Project Not Found' };
   }
 }
 
-export default async function ProjectDetailPage({ params }: ProjectPageProps) {
-  let project = null;
+import { Project } from '@/features/admin/projects/types';
+
+export default async function ProjectDetailPage(props: ProjectPageProps) {
+  const params = await props.params;
+  let project: Project | null = null;
   try {
     project = await getPublicProjectBySlug(params.slug);
   } catch (error) {
@@ -60,25 +80,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   return (
     <article className="pt-24 pb-16">
-      {/* JSON-LD Structured Data for CreativeWork */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'CreativeWork',
-            name: project.title,
-            description: project.description,
-            url: `https://portfolio.example.com/projects/${project.slug}`,
-            image: project.thumbnail,
-            author: {
-              '@type': 'Person',
-              name: 'Developer Name'
-            }
-          }),
-        }}
-      />
-
       <Container>
         <AnimatedReveal>
           <Link href="/projects" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-8">
@@ -111,7 +112,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </div>
 
           <div className="flex flex-wrap gap-2 mb-12">
-            {project.technologies.map(tag => (
+            {project.technologies.map((tag: string) => (
               <TechnologyBadge key={tag} name={tag} variant="secondary" />
             ))}
           </div>

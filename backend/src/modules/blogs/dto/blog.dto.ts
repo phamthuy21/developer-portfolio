@@ -27,4 +27,7 @@ export class BlogResponseDto {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiPropertyOptional()
+  deletedAt?: Date | null;
 }

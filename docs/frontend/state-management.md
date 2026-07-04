@@ -21,4 +21,11 @@ We use `react-hook-form` for managing complex form state, combined with `zod` fo
 
 ## Client State (Local Storage & Context)
 - **Local Storage**: Wrapped via `src/lib/storage/` (e.g., `token.storage.ts`). Direct `localStorage.getItem` inside components is forbidden.
-- **Context API**: Used sparingly for global concerns (e.g., Auth Provider, Theme Provider).
+- **Context API**: Used sparingly for global concerns (e.g., Auth Provider, Theme Provider, Permission Provider).
+
+## Authentication State & Interceptors
+Authentication state is managed by the `AuthProvider` which decodes and stores the JWT payload upon successful login. 
+- **Axios Interceptors**: We use a dual-interceptor pattern in `src/lib/api/client.ts`.
+  - `auth.interceptor.ts`: Attaches the Bearer token and automatically handles 401 Unauthorized responses by pausing in-flight requests, refreshing the token against `/auth/refresh`, and retrying the queued requests (preventing infinite refresh loops). Refresh failures are wrapped in standard RFC 7807 `UnauthorizedError`s.
+  - `error.interceptor.ts`: Formats all other Axios errors into structured, predictable application error classes (`ApiError`, `ForbiddenError`, etc.).
+- **Route Protection**: Admin routes are protected at the layout level (`app/(admin)/layout.tsx`). The layout blocks rendering until `AuthProvider.isLoading` is false, guaranteeing that React Query hooks in child components do not inadvertently fire unauthorized requests during initial session hydration.

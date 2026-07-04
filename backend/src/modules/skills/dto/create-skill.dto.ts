@@ -7,13 +7,13 @@ export class CreateSkillDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ description: 'URL-friendly slug, unique' })
+  @ApiPropertyOptional({ description: 'URL-friendly slug, unique' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
     message: 'Slug must be lowercase alphanumeric with hyphens',
   })
-  slug: string;
+  slug?: string;
 
   @ApiProperty({
     description: 'Category of the skill (e.g., Frontend, Backend)',

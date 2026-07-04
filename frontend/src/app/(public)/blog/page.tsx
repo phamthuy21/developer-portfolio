@@ -16,13 +16,12 @@ export const metadata: Metadata = {
   description: 'Read my latest articles, tutorials, and thoughts on software development.',
 };
 
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+export default async function BlogPage(props: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const searchParams = await props.searchParams;
   const page = typeof searchParams?.page === 'string' ? parseInt(searchParams.page, 10) : 1;
-  const blogsResponse = await getPublicBlogs({ limit: 12, page }).catch(() => ({ data: [], meta: { total: 0 } }));
+  const blogsResponse = await getPublicBlogs({ limit: 10, page }).catch(() => ({ data: [], meta: { total: 0 } }));
   const blogs = blogsResponse?.data || [];
 
   return (

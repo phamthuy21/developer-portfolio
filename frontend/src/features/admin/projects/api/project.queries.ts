@@ -24,6 +24,7 @@ export const useCreateProject = () => {
     mutationFn: (data: ProjectFormData) => projectsApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_PROJECTS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -35,6 +36,7 @@ export const useUpdateProject = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_PROJECTS] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_PROJECTS, variables.id] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -45,6 +47,7 @@ export const useDeleteProject = () => {
     mutationFn: (id: string) => projectsApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_PROJECTS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -54,6 +57,7 @@ export const useProjectActions = () => {
   const invalidate = (id: string) => {
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_PROJECTS] });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_PROJECTS, id] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
   };
 
   const publishMutation = useMutation({

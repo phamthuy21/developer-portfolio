@@ -29,15 +29,11 @@ export function SkillForm({ initialData }: SkillFormProps) {
     defaultValues: initialData ? {
       name: initialData.name,
       category: initialData.category,
-      icon: initialData.icon,
-      proficiency: initialData.proficiency,
-      order: initialData.order,
+      icon: initialData.iconUrl,
     } : {
       name: '',
       category: '',
       icon: null,
-      proficiency: 0,
-      order: 0,
     },
   });
 
@@ -77,19 +73,7 @@ export function SkillForm({ initialData }: SkillFormProps) {
           {form.formState.errors.icon && <p className="text-red-500 text-xs">{form.formState.errors.icon.message}</p>}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="proficiency">Proficiency (0-100)</Label>
-            <Input id="proficiency" type="number" {...form.register('proficiency', { valueAsNumber: true })} />
-            {form.formState.errors.proficiency && <p className="text-red-500 text-xs">{form.formState.errors.proficiency.message}</p>}
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="order">Display Order</Label>
-            <Input id="order" type="number" {...form.register('order', { valueAsNumber: true })} />
-            {form.formState.errors.order && <p className="text-red-500 text-xs">{form.formState.errors.order.message}</p>}
-          </div>
-        </div>
 
         <div className="flex justify-end space-x-4">
           <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>

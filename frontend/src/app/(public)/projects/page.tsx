@@ -16,11 +16,10 @@ export const metadata: Metadata = {
   description: 'Explore my portfolio of web applications, tools, and open-source projects.',
 };
 
-export default async function ProjectsPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+export default async function ProjectsPage(props: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const searchParams = await props.searchParams;
   const page = typeof searchParams?.page === 'string' ? parseInt(searchParams.page, 10) : 1;
   const projectsResponse = await getPublicProjects({ limit: 12, page }).catch(() => ({ data: [], meta: { total: 0 } }));
   const projects = projectsResponse?.data || [];
@@ -58,7 +57,7 @@ export default async function ProjectsPage({
                       </div>
                       <div className="flex flex-col flex-1 p-6">
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {project.technologies.slice(0, 3).map(tag => (
+                          {project.technologies.slice(0, 3).map((tag: string) => (
                             <TechnologyBadge key={tag} name={tag} variant="secondary" className="text-[10px] px-2 py-0" />
                           ))}
                           {project.technologies.length > 3 && (

@@ -24,6 +24,7 @@ export const useCreateBlog = () => {
     mutationFn: (data: BlogFormData) => blogsApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_BLOGS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -35,6 +36,7 @@ export const useUpdateBlog = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_BLOGS] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_BLOGS, variables.id] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -45,6 +47,7 @@ export const useDeleteBlog = () => {
     mutationFn: (id: string) => blogsApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_BLOGS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
     },
   });
 };
@@ -54,6 +57,7 @@ export const useBlogActions = () => {
   const invalidate = (id: string) => {
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_BLOGS] });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_BLOGS, id] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ADMIN_DASHBOARD_STATS] });
   };
 
   const publishMutation = useMutation({

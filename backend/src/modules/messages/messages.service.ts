@@ -23,6 +23,7 @@ export class MessagesService {
     content: true,
     isRead: true,
     createdAt: true,
+    deletedAt: true,
   } satisfies Prisma.MessageSelect;
 
   async create(

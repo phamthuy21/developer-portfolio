@@ -18,9 +18,8 @@ export const messagesApi = {
     await apiClient.delete(`${ENDPOINTS.ADMIN.MESSAGES}/${id}`);
   },
 
-  restore: async (id: string): Promise<Message> => {
-    const response = await apiClient.patch<ApiResponse<Message>>(`${ENDPOINTS.ADMIN.MESSAGES}/${id}/restore`);
-    return response.data.data;
+  restore: async (id: string): Promise<void> => {
+    await apiClient.patch(`${ENDPOINTS.ADMIN.MESSAGES}/${id}/restore`);
   },
 
   updateStatus: async (id: string, isRead: boolean): Promise<Message> => {
