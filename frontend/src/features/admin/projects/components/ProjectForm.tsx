@@ -13,6 +13,8 @@ import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { toast } from 'sonner';
+import { useSkills } from '../../skills/api/skill.queries';
+import { Badge } from '@/components/ui/badge';
 
 interface ProjectFormProps {
   initialData?: Project;
@@ -25,7 +27,8 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
 
   const isEditing = !!initialData;
 
-  const [techString, setTechString] = React.useState(initialData?.technologies?.join(', ') || '');
+  const { data: skillsData } = useSkills({ limit: 100 });
+  const allSkills = skillsData?.data || [];
 
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
@@ -34,7 +37,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
       description: initialData.description,
       content: initialData.content,
       thumbnail: initialData.thumbnail || '',
-      technologies: initialData.technologies || [],
+      skillIds: initialData.skills?.map(s => s.id) || [],
       repositoryUrl: initialData.repositoryUrl || '',
       liveUrl: initialData.liveUrl || '',
       isPublished: initialData.isPublished,
@@ -44,13 +47,15 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
       description: '',
       content: '',
       thumbnail: '',
-      technologies: [],
+      skillIds: [],
       repositoryUrl: '',
       liveUrl: '',
       isPublished: false,
       isFeatured: false,
     },
   });
+
+  const currentSkills = form.watch('skillIds') || [];
 
   const onSubmit = async (data: ProjectFormData) => {
     try {
@@ -134,18 +139,33 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="technologies">Technologies (comma separated)</Label>
-          <Input 
-            id="technologies" 
-            placeholder="React, NestJS, Postgres"
-            value={techString}
-            onChange={(e) => {
-              const val = e.target.value;
-              setTechString(val);
-              form.setValue('technologies', val.split(',').map(s => s.trim()).filter(Boolean));
-            }}
-          />
-          {form.formState.errors.technologies && <p className="text-red-500 text-xs">{form.formState.errors.technologies.message}</p>}
+          <Label>Skills</Label>
+          <div className="flex flex-wrap gap-2 p-4 border rounded-md min-h-[100px] bg-background">
+            {allSkills.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No skills found. Please add skills in the Admin panel.</p>
+            ) : (
+              allSkills.map(skill => {
+                const isSelected = currentSkills.includes(skill.id);
+                return (
+                  <Badge
+                    key={skill.id}
+                    variant={isSelected ? 'default' : 'outline'}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      if (isSelected) {
+                        form.setValue('skillIds', currentSkills.filter(id => id !== skill.id), { shouldValidate: true });
+                      } else {
+                        form.setValue('skillIds', [...currentSkills, skill.id], { shouldValidate: true });
+                      }
+                    }}
+                  >
+                    {skill.name}
+                  </Badge>
+                );
+              })
+            )}
+          </div>
+          {form.formState.errors.skillIds && <p className="text-red-500 text-xs">{form.formState.errors.skillIds.message}</p>}
         </div>
 
         <div className="flex space-x-6">

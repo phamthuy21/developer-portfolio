@@ -55,6 +55,14 @@ export class MessagesService {
     if (isRead !== undefined) {
       where.isRead = isRead;
     }
+    
+    if (query.search) {
+      where.OR = [
+        { name: { contains: query.search, mode: 'insensitive' } },
+        { email: { contains: query.search, mode: 'insensitive' } },
+        { subject: { contains: query.search, mode: 'insensitive' } },
+      ];
+    }
 
     const orderBy: Prisma.MessageOrderByWithRelationInput = { [sort]: order };
 

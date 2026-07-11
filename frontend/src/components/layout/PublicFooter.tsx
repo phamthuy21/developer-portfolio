@@ -18,10 +18,9 @@ export function PublicFooter() {
             </p>
             <div className="mt-6">
               <SocialLinks 
-                github="https://github.com" 
-                linkedin="https://linkedin.com"
-                twitter="https://twitter.com"
-                email="hello@example.com"
+                github="https://github.com/phamthuy21" 
+                linkedin="https://www.linkedin.com/in/pdt21/"
+                email="phamthuy2192001@gmail.com"
               />
             </div>
           </div>
@@ -51,9 +50,9 @@ export function PublicFooter() {
         
         <div className="mt-12 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
           <p>© {currentYear} Developer Portfolio. All rights reserved.</p>
-          <p>
+          {/* <p>
             Built with <span className="text-foreground font-medium">Next.js</span> and <span className="text-foreground font-medium">NestJS</span>
-          </p>
+          </p> */}
         </div>
       </Container>
     </footer>

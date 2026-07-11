@@ -72,7 +72,7 @@ export function ContactForm() {
           <label htmlFor="name" className="text-sm font-medium">Name</label>
           <Input 
             id="name" 
-            placeholder="John Doe" 
+            placeholder="Pham Duc Thuy" 
             {...register('name')} 
             className={errors.name ? 'border-destructive' : ''}
           />
@@ -86,7 +86,7 @@ export function ContactForm() {
           <Input 
             id="email" 
             type="email" 
-            placeholder="john@example.com" 
+            placeholder="example@example.com" 
             {...register('email')} 
             className={errors.email ? 'border-destructive' : ''}
           />

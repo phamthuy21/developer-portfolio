@@ -21,7 +21,7 @@ export const experiencesApi = {
 
   create: async (data: ExperienceFormData): Promise<Experience> => {
     const payload = {
-      position: data.title,
+      position: data.position,
       company: data.company,
       location: data.location || undefined,
       startDate: new Date(data.startDate).toISOString(),
@@ -35,11 +35,9 @@ export const experiencesApi = {
 
   update: async ({ id, data }: { id: string; data: Partial<ExperienceFormData> }): Promise<Experience> => {
     const payload: any = { ...data };
-    if (data.title !== undefined) payload.position = data.title;
     if (data.isCurrent !== undefined) payload.current = data.isCurrent;
     if (data.startDate) payload.startDate = new Date(data.startDate).toISOString();
     if (data.endDate) payload.endDate = new Date(data.endDate).toISOString();
-    delete payload.title;
     delete payload.isCurrent;
 
     const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.EXPERIENCES}/${id}`, payload);

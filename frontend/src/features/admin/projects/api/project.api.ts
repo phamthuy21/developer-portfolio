@@ -29,7 +29,7 @@ export const projectsApi = {
       imageUrl: data.thumbnail || undefined,
       featured: data.isFeatured,
       published: data.isPublished,
-      technologies: data.technologies,
+      skillIds: data.skillIds,
     };
     const response = await apiClient.post<ApiResponse<any>>(ENDPOINTS.ADMIN.PROJECTS, payload);
     return mapProjectResponse(response.data.data);
@@ -45,7 +45,7 @@ export const projectsApi = {
       imageUrl: data.thumbnail || undefined,
       featured: data.isFeatured,
       published: data.isPublished,
-      technologies: data.technologies,
+      skillIds: data.skillIds,
     };
     const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}`, payload);
     return mapProjectResponse(response.data.data);

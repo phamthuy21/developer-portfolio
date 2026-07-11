@@ -96,7 +96,7 @@ export default async function BlogDetailPage(props: BlogPageProps) {
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
             {blog.title}
           </h1>
-          <p className="text-xl text-muted-foreground mb-12">
+          <p className="text-xl text-muted-foreground">
             {blog.excerpt}
           </p>
         </AnimatedReveal>

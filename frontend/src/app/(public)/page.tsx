@@ -13,12 +13,12 @@ export const revalidate = 3600;
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Developer Name',
+  name: 'Pham Duc Thuy',
   jobTitle: 'Full-Stack Developer',
   url: 'https://portfolio.example.com',
   sameAs: [
-    'https://github.com/example',
-    'https://linkedin.com/in/example',
+    'https://github.com/phamthuy21',
+    'https://www.linkedin.com/in/pdt21/',
   ],
 };
 

@@ -36,7 +36,7 @@ export function ExperienceList() {
   };
 
   const columns = [
-    { key: 'title', label: 'Title' },
+    { key: 'position', label: 'Job Title' },
     { key: 'company', label: 'Company' },
     { 
       key: 'dates', 

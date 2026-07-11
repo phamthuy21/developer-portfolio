@@ -196,28 +196,10 @@ export class ProjectsService {
     );
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { skillIds, technologies, slug: _slug, ...data } = createProjectDto;
+    const { skillIds, slug: _slug, ...data } = createProjectDto;
 
     const project = await this.prisma.$transaction(async (prisma) => {
-      let finalSkillIds: string[] = skillIds || [];
-      if (technologies && technologies.length > 0) {
-        const skills = await Promise.all(
-          technologies.map(async (name) => {
-            const s = name
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, '-')
-              .replace(/(^-|-$)+/g, '');
-            let skill = await prisma.skill.findUnique({ where: { slug: s } });
-            if (!skill) {
-              skill = await prisma.skill.create({
-                data: { name, slug: s, category: 'General' },
-              });
-            }
-            return skill.id;
-          }),
-        );
-        finalSkillIds = [...new Set([...finalSkillIds, ...skills])];
-      }
+      const finalSkillIds: string[] = skillIds || [];
 
       return prisma.project.create({
         data: {
@@ -261,32 +243,10 @@ export class ProjectsService {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { skillIds, technologies, slug: _slug, ...data } = updateProjectDto;
+    const { skillIds, slug: _slug, ...data } = updateProjectDto;
 
     const project = await this.prisma.$transaction(async (prisma) => {
-      let finalSkillIds: string[] | undefined = skillIds;
-
-      if (technologies) {
-        finalSkillIds = finalSkillIds || [];
-        const skills = await Promise.all(
-          technologies.map(async (name) => {
-            const s = name
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, '-')
-              .replace(/(^-|-$)+/g, '');
-            let skill = await prisma.skill.findUnique({ where: { slug: s } });
-            if (!skill) {
-              skill = await prisma.skill.create({
-                data: { name, slug: s, category: 'General' },
-              });
-            }
-            return skill.id;
-          }),
-        );
-        finalSkillIds = [...new Set([...finalSkillIds, ...skills])];
-      }
-
-      if (finalSkillIds !== undefined) {
+      if (skillIds !== undefined) {
         await prisma.projectSkill.deleteMany({ where: { projectId: id } });
       }
 
@@ -296,9 +256,9 @@ export class ProjectsService {
           ...data,
           ...(slug && { slug }),
           skills:
-            finalSkillIds !== undefined
+            skillIds !== undefined
               ? {
-                  create: finalSkillIds.map((skillId) => ({ skillId })),
+                  create: skillIds.map((skillId) => ({ skillId })),
                 }
               : undefined,
         },

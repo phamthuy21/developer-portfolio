@@ -65,6 +65,11 @@ export class MessageQueryDto {
 
   @ApiProperty({ required: false })
   @IsOptional()
+  @IsString()
+  search?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => value === 'true')
   isRead?: boolean;

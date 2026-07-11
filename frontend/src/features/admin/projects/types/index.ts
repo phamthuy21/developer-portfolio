@@ -6,7 +6,8 @@ export interface Project {
   content: string;
   thumbnail: string | null;
   images: string[];
-  technologies: string[];
+  technologies: string[]; // keep for backwards compatibility if needed, or remove? I will remove technologies and use skills.
+  skills: { id: string; name: string }[];
   repositoryUrl: string | null;
   liveUrl: string | null;
   isPublished: boolean;

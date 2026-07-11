@@ -5,6 +5,7 @@ import { ReactQueryProvider } from '@/lib/react-query/query-provider';
 import { AuthProvider } from '@/providers/auth.provider';
 import { PermissionProvider } from '@/providers/permission.provider';
 import { ThemeProvider } from 'next-themes';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
             <AuthProvider>
               <PermissionProvider>
                 {children}
+                <Toaster richColors position="top-right" />
               </PermissionProvider>
             </AuthProvider>
           </ReactQueryProvider>

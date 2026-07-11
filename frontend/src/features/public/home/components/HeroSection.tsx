@@ -32,7 +32,7 @@ export function HeroSection() {
           
           <AnimatedReveal direction="up" delay={0.3}>
             <p className="mt-6 mx-auto max-w-2xl text-xl text-muted-foreground">
-              I&apos;m a full-stack developer specializing in React, Next.js, and Node.js. 
+              I&apos;m a full-stack developer specializing in <span className="font-bold">Outsystem platform</span>. 
               I build performant, accessible, and beautiful digital experiences.
             </p>
           </AnimatedReveal>
@@ -42,18 +42,18 @@ export function HeroSection() {
               <Link href="/projects" className={cn(buttonVariants({ size: "lg" }), "rounded-full w-full sm:w-auto")}>
                 View My Work <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
-              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: "outline", size: "lg" }), "rounded-full w-full sm:w-auto")}>
+              {/* <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: "outline", size: "lg" }), "rounded-full w-full sm:w-auto")}>
                 Download Resume <Download className="ml-2 h-4 w-4" />
-              </a>
+              </a> */}
             </div>
           </AnimatedReveal>
 
           <AnimatedReveal direction="up" delay={0.5}>
             <div className="mt-12 flex justify-center">
               <SocialLinks 
-                github="https://github.com" 
-                linkedin="https://linkedin.com"
-                twitter="https://twitter.com"
+                github="https://github.com/phamthuy21" 
+                linkedin="https://www.linkedin.com/in/pdt21/"
+                email="phamthuy2192001@gmail.com"
                 iconSize={24} 
               />
             </div>

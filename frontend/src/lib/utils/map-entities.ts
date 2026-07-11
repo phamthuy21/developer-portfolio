@@ -31,7 +31,7 @@ export const mapSkillResponse = (s: any): Skill => ({
 
 export const mapExperienceResponse = (e: any): Experience => ({
   id: e.id,
-  title: e.title,
+  position: e.position,
   company: e.company,
   location: e.location || null,
   startDate: e.startDate,

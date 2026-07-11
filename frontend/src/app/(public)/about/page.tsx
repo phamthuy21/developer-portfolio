@@ -14,16 +14,16 @@ export const metadata: Metadata = {
 };
 
 const BIO_CONTENT = `
-Hi, I'm a passionate full-stack developer focused on building scalable, performant, and accessible web applications. I enjoy turning complex problems into simple, beautiful, and intuitive designs.
+Hi, I'm Pham Duc Thuy, a passionate Full-Stack Software Engineer with over 3 years of experience specializing in the OutSystems low-code platform. I focus on building scalable, high-performance, and secure enterprise web applications, primarily for Japanese clients across domains like Contract Management, GRC, HR, and Internal Operations.
 
 ### My Journey
-My journey into software development started a few years ago when I decided to build a website for a local business. Since then, I've had the privilege of working with various startups and established companies, helping them build digital products that make a difference.
+My journey into software development started during my university years, driven by a passion for building impactful software. Over the past 3+ years, I’ve had the privilege of partnering with international clients to transform legacy systems into modern digital products, ensuring seamless system migrations and robust enterprise architectures.
 
 ### What I Do
-I specialize in the React ecosystem (Next.js, React, React Native) for the frontend, and Node.js (NestJS, Express) for the backend. I have strong experience working with relational databases (PostgreSQL, MySQL) and NoSQL databases (MongoDB, Redis). I also care deeply about UI/UX and spend time crafting experiences using tools like Tailwind CSS and Framer Motion.
+I specialize in the OutSystems ecosystem (holding multiple certifications including Associate Reactive, ODC, Mobile, and Architecture Specialist). On the backend, I leverage .NET to build custom extensions for heavy data processing, integrate AWS S3, and configure enterprise security with SSO/SAML. I work extensively with relational databases such as Oracle, MySQL, and SQL Server.
 
 ### Outside of Coding
-When I'm not coding, you can find me exploring new coffee shops, hiking, or reading about the latest trends in technology and design.
+When I'm not coding, you can find me exploring new coffee shops, or reading about the latest trends in technology and design.
 `;
 
 export default async function AboutPage() {
@@ -53,11 +53,11 @@ export default async function AboutPage() {
                 <ul className="space-y-4">
                   <li>
                     <strong className="block text-sm text-muted-foreground uppercase tracking-wider">Location</strong>
-                    <span>San Francisco, CA</span>
+                    <span>Hanoi, Vietnam</span>
                   </li>
                   <li>
                     <strong className="block text-sm text-muted-foreground uppercase tracking-wider">Experience</strong>
-                    <span>5+ Years</span>
+                    <span>3+ Years</span>
                   </li>
                   <li>
                     <strong className="block text-sm text-muted-foreground uppercase tracking-wider">Availability</strong>

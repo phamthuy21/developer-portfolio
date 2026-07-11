@@ -63,10 +63,4 @@ export class CreateProjectDto {
   @IsArray()
   @IsUUID('4', { each: true })
   skillIds?: string[];
-
-  @ApiPropertyOptional({ description: 'Array of skill names to link/create' })
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  technologies?: string[];
 }

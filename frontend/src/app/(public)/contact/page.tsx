@@ -40,7 +40,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-lg">Email</h3>
-                        <p className="text-muted-foreground">hello@example.com</p>
+                        <p className="text-muted-foreground">phamthuy2192001@gmail.com</p>
                       </div>
                     </div>
                     
@@ -50,7 +50,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-lg">Location</h3>
-                        <p className="text-muted-foreground">San Francisco, CA<br/>Available Remote</p>
+                        <p className="text-muted-foreground">Hanoi, Vietnam<br/>Available Remote</p>
                       </div>
                     </div>
                   </div>
@@ -58,9 +58,9 @@ export default function ContactPage() {
                   <div className="pt-8 border-t">
                     <h3 className="font-semibold mb-4 text-lg">Connect with me</h3>
                     <SocialLinks 
-                      github="https://github.com" 
-                      linkedin="https://linkedin.com"
-                      twitter="https://twitter.com"
+                      github="https://github.com/phamthuy21" 
+                      linkedin="https://www.linkedin.com/in/pdt21/"
+                      email="phamthuy2192001@gmail.com"
                       iconSize={24} 
                     />
                   </div>

@@ -28,7 +28,7 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
   const form = useForm<ExperienceFormData>({
     resolver: zodResolver(experienceSchema),
     defaultValues: initialData ? {
-      title: initialData.title,
+      position: initialData.position,
       company: initialData.company,
       location: initialData.location,
       startDate: initialData.startDate,
@@ -36,7 +36,7 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
       isCurrent: initialData.isCurrent,
       description: initialData.description,
     } : {
-      title: '',
+      position: '',
       company: '',
       location: null,
       startDate: '',
@@ -66,9 +66,9 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-2xl">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="title">Job Title</Label>
-            <Input id="title" {...form.register('title')} />
-            {form.formState.errors.title && <p className="text-red-500 text-xs">{form.formState.errors.title.message}</p>}
+            <Label htmlFor="position">Job Title</Label>
+            <Input id="position" {...form.register('position')} />
+            {form.formState.errors.position && <p className="text-red-500 text-xs">{form.formState.errors.position.message}</p>}
           </div>
 
           <div className="space-y-2">

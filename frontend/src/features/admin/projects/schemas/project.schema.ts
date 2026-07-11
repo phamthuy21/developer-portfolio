@@ -5,7 +5,7 @@ export const projectSchema = z.object({
   description: z.string().min(1, 'Description is required'),
   content: z.string().min(1, 'Content is required'),
   thumbnail: z.string().url('Invalid URL').nullable().optional().or(z.literal('')),
-  technologies: z.array(z.string()).min(1, 'At least one technology is required'),
+  skillIds: z.array(z.string()).min(1, 'At least one skill is required'),
   repositoryUrl: z.string().url().nullable().optional().or(z.literal('')),
   liveUrl: z.string().url().nullable().optional().or(z.literal('')),
   isPublished: z.boolean(),

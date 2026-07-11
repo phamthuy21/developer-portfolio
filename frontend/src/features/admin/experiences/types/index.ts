@@ -1,6 +1,6 @@
 export interface Experience {
   id: string;
-  title: string;
+  position: string;
   company: string;
   location: string | null;
   startDate: string;

@@ -39,7 +39,7 @@ export default async function ExperiencePage() {
                     </span>
 
                     <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
-                      <h3 className="text-xl font-bold">{exp.title}</h3>
+                      <h3 className="text-xl font-bold">{exp.position}</h3>
                       <div className="text-sm font-medium text-muted-foreground mt-1 sm:mt-0 bg-muted px-2 py-1 rounded-md inline-block">
                         {format(new Date(exp.startDate), 'MMM yyyy')} - {exp.isCurrent ? 'Present' : format(new Date(exp.endDate!), 'MMM yyyy')}
                       </div>

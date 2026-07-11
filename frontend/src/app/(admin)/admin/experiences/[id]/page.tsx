@@ -23,7 +23,7 @@ export default function EditExperiencePage() {
     <PageContainer>
       <PageHeader 
         title="Edit Experience" 
-        description={`Editing: ${experience.title} at ${experience.company}`}
+        description={`Editing: ${experience.position} at ${experience.company}`}
       />
       <ExperienceForm initialData={experience} />
     </PageContainer>
