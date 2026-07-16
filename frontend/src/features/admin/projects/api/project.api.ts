@@ -7,7 +7,7 @@ import { mapProjectResponse } from '@/lib/utils/map-project';
 
 export const projectsApi = {
   list: async (params?: { page?: number; limit?: number; search?: string }): Promise<PaginatedResponse<Project>> => {
-    const response = await apiClient.get<PaginatedResponse<any>>(ENDPOINTS.ADMIN.PROJECTS, { params });
+    const response = await apiClient.get<PaginatedResponse<unknown>>(ENDPOINTS.ADMIN.PROJECTS, { params });
     return {
       ...response.data,
       data: response.data.data.map(mapProjectResponse),
@@ -15,7 +15,7 @@ export const projectsApi = {
   },
 
   getById: async (id: string): Promise<Project> => {
-    const response = await apiClient.get<ApiResponse<any>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}`);
+    const response = await apiClient.get<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}`);
     return mapProjectResponse(response.data.data);
   },
 
@@ -31,7 +31,7 @@ export const projectsApi = {
       published: data.isPublished,
       skillIds: data.skillIds,
     };
-    const response = await apiClient.post<ApiResponse<any>>(ENDPOINTS.ADMIN.PROJECTS, payload);
+    const response = await apiClient.post<ApiResponse<unknown>>(ENDPOINTS.ADMIN.PROJECTS, payload);
     return mapProjectResponse(response.data.data);
   },
 
@@ -47,7 +47,7 @@ export const projectsApi = {
       published: data.isPublished,
       skillIds: data.skillIds,
     };
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}`, payload);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}`, payload);
     return mapProjectResponse(response.data.data);
   },
 
@@ -60,22 +60,22 @@ export const projectsApi = {
   },
 
   publish: async (id: string): Promise<Project> => {
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}/publish`);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}/publish`);
     return mapProjectResponse(response.data.data);
   },
 
   unpublish: async (id: string): Promise<Project> => {
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}/unpublish`);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}/unpublish`);
     return mapProjectResponse(response.data.data);
   },
 
   feature: async (id: string): Promise<Project> => {
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}/feature`);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}/feature`);
     return mapProjectResponse(response.data.data);
   },
 
   unfeature: async (id: string): Promise<Project> => {
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}/unfeature`);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.PROJECTS}/${id}/unfeature`);
     return mapProjectResponse(response.data.data);
   },
 };

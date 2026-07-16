@@ -8,8 +8,8 @@ export interface SkillCategoryGroup {
 }
 
 export const getPublicSkills = async (): Promise<SkillCategoryGroup[]> => {
-  const response = await apiClient.get<{ data: Record<string, any[]> }>('/skills');
-  const grouped: Record<string, any[]> = response.data.data;
+  const response = await apiClient.get<{ data: Record<string, unknown[]> }>('/skills');
+  const grouped: Record<string, unknown[]> = response.data.data;
 
   if (!grouped || typeof grouped !== 'object' || Array.isArray(grouped)) {
     console.error('[getPublicSkills] Unexpected response shape:', grouped);

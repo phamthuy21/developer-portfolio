@@ -14,8 +14,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/backend/node_modules ./backend/node_modules
 COPY . .
 WORKDIR /app/backend
-# Generate Prisma Client if needed later
-# RUN npx prisma generate
+# Generate Prisma Client
+RUN npx prisma generate
 RUN pnpm run build
 
 FROM base AS runner

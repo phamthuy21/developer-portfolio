@@ -7,7 +7,7 @@ import { mapExperienceResponse } from '@/lib/utils/map-entities';
 
 export const experiencesApi = {
   list: async (params?: { page?: number; limit?: number; search?: string }): Promise<PaginatedResponse<Experience>> => {
-    const response = await apiClient.get<PaginatedResponse<any>>(ENDPOINTS.ADMIN.EXPERIENCES, { params });
+    const response = await apiClient.get<PaginatedResponse<unknown>>(ENDPOINTS.ADMIN.EXPERIENCES, { params });
     return {
       ...response.data,
       data: response.data.data.map(mapExperienceResponse),
@@ -15,7 +15,7 @@ export const experiencesApi = {
   },
 
   getById: async (id: string): Promise<Experience> => {
-    const response = await apiClient.get<ApiResponse<any>>(`${ENDPOINTS.ADMIN.EXPERIENCES}/${id}`);
+    const response = await apiClient.get<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.EXPERIENCES}/${id}`);
     return mapExperienceResponse(response.data.data);
   },
 
@@ -29,18 +29,18 @@ export const experiencesApi = {
       current: data.isCurrent,
       description: data.description,
     };
-    const response = await apiClient.post<ApiResponse<any>>(ENDPOINTS.ADMIN.EXPERIENCES, payload);
+    const response = await apiClient.post<ApiResponse<unknown>>(ENDPOINTS.ADMIN.EXPERIENCES, payload);
     return mapExperienceResponse(response.data.data);
   },
 
   update: async ({ id, data }: { id: string; data: Partial<ExperienceFormData> }): Promise<Experience> => {
-    const payload: any = { ...data };
+    const payload: Record<string, unknown> = { ...data };
     if (data.isCurrent !== undefined) payload.current = data.isCurrent;
     if (data.startDate) payload.startDate = new Date(data.startDate).toISOString();
     if (data.endDate) payload.endDate = new Date(data.endDate).toISOString();
     delete payload.isCurrent;
 
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.EXPERIENCES}/${id}`, payload);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.EXPERIENCES}/${id}`, payload);
     return mapExperienceResponse(response.data.data);
   },
 

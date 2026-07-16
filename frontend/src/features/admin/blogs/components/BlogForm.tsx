@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { blogSchema, BlogFormData } from '../schemas/blog.schema';
 import { useCreateBlog, useUpdateBlog } from '../api/blog.queries';
@@ -57,6 +57,8 @@ export function BlogForm({ initialData }: BlogFormProps) {
     }
   };
 
+  const isPublished = useWatch({ control: form.control, name: 'isPublished' });
+
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-2xl">
@@ -87,7 +89,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
         <div className="flex items-center space-x-2">
           <Checkbox
             id="isPublished"
-            checked={form.watch('isPublished') ?? false}
+            checked={isPublished ?? false}
             onCheckedChange={(checked) => form.setValue('isPublished', checked as boolean)}
           />
           <Label htmlFor="isPublished">Published</Label>

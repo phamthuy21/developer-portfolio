@@ -55,7 +55,7 @@ export class MessagesService {
     if (isRead !== undefined) {
       where.isRead = isRead;
     }
-    
+
     if (query.search) {
       where.OR = [
         { name: { contains: query.search, mode: 'insensitive' } },

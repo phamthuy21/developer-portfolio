@@ -7,7 +7,7 @@ import { mapCertificateResponse } from '@/lib/utils/map-entities';
 
 export const certificatesApi = {
   list: async (params?: { page?: number; limit?: number; search?: string }): Promise<PaginatedResponse<Certificate>> => {
-    const response = await apiClient.get<PaginatedResponse<any>>(ENDPOINTS.ADMIN.CERTIFICATES, { params });
+    const response = await apiClient.get<PaginatedResponse<unknown>>(ENDPOINTS.ADMIN.CERTIFICATES, { params });
     return {
       ...response.data,
       data: response.data.data.map(mapCertificateResponse),
@@ -15,7 +15,7 @@ export const certificatesApi = {
   },
 
   getById: async (id: string): Promise<Certificate> => {
-    const response = await apiClient.get<ApiResponse<any>>(`${ENDPOINTS.ADMIN.CERTIFICATES}/${id}`);
+    const response = await apiClient.get<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.CERTIFICATES}/${id}`);
     return mapCertificateResponse(response.data.data);
   },
 
@@ -27,18 +27,18 @@ export const certificatesApi = {
       credentialUrl: data.credentialUrl || undefined,
       imageUrl: data.thumbnail || undefined,
     };
-    const response = await apiClient.post<ApiResponse<any>>(ENDPOINTS.ADMIN.CERTIFICATES, payload);
+    const response = await apiClient.post<ApiResponse<unknown>>(ENDPOINTS.ADMIN.CERTIFICATES, payload);
     return mapCertificateResponse(response.data.data);
   },
 
   update: async ({ id, data }: { id: string; data: Partial<CertificateFormData> }): Promise<Certificate> => {
-    const payload: any = { ...data };
+    const payload: Record<string, unknown> = { ...data };
     if (data.issueDate) payload.issueDate = new Date(data.issueDate).toISOString();
     if (data.thumbnail !== undefined) {
       payload.imageUrl = data.thumbnail || undefined;
       delete payload.thumbnail;
     }
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.CERTIFICATES}/${id}`, payload);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.CERTIFICATES}/${id}`, payload);
     return mapCertificateResponse(response.data.data);
   },
 

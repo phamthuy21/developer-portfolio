@@ -8,7 +8,7 @@ import { MarkdownRenderer } from '@/components/common/MarkdownRenderer';
 import { TechnologyBadge } from '@/components/public/TechnologyBadge';
 import { ArrowLeft, ExternalLink, Code } from 'lucide-react';
 import Link from 'next/link';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 
 export const revalidate = 300;
 
@@ -22,7 +22,7 @@ export async function generateStaticParams() {
     return (response?.data || []).map((project) => ({
       slug: project.slug,
     }));
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -58,7 +58,7 @@ export async function generateMetadata(props: ProjectPageProps): Promise<Metadat
         'script:ld+json': JSON.stringify(jsonLd),
       },
     };
-  } catch (error) {
+  } catch {
     return { title: 'Project Not Found' };
   }
 }
@@ -70,7 +70,7 @@ export default async function ProjectDetailPage(props: ProjectPageProps) {
   let project: Project | null = null;
   try {
     project = await getPublicProjectBySlug(params.slug);
-  } catch (error) {
+  } catch {
     // handled by !project below
   }
 
@@ -123,6 +123,7 @@ export default async function ProjectDetailPage(props: ProjectPageProps) {
         <AnimatedReveal delay={0.2} direction="none">
           <Container className="mb-16">
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl border bg-muted shadow-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 src={project.thumbnail} 
                 alt={project.title} 

@@ -3,6 +3,7 @@ import { Skill } from '@/features/admin/skills/types';
 import { Experience } from '@/features/admin/experiences/types';
 import { Certificate } from '@/features/admin/certificates/types';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapBlogResponse = (b: any): Blog => ({
   id: b.id,
   title: b.title,
@@ -18,6 +19,7 @@ export const mapBlogResponse = (b: any): Blog => ({
   deletedAt: b.deletedAt || null,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapSkillResponse = (s: any): Skill => ({
   id: s.id,
   name: s.name,
@@ -29,6 +31,7 @@ export const mapSkillResponse = (s: any): Skill => ({
   deletedAt: s.deletedAt || null,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapExperienceResponse = (e: any): Experience => ({
   id: e.id,
   position: e.position,
@@ -44,6 +47,7 @@ export const mapExperienceResponse = (e: any): Experience => ({
   deletedAt: e.deletedAt || null,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapCertificateResponse = (c: any): Certificate => ({
   id: c.id,
   name: c.name || c.title,

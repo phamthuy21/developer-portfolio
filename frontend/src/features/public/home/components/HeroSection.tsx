@@ -5,7 +5,7 @@ import { Container } from '@/components/public/Container';
 import { AnimatedReveal } from '@/components/public/AnimatedReveal';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ArrowRight, Download } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { SocialLinks } from '@/components/public/SocialLinks';
 

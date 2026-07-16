@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { Logger } from 'nestjs-pino';
 import helmet from 'helmet';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import { VersioningType } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from './config/swagger.config';
@@ -26,6 +27,7 @@ async function bootstrap() {
 
   // Security & Optimization
   app.use(helmet());
+  app.use(cookieParser());
   app.enableCors({
     origin: configService.get<string>('app.frontendUrl'),
     credentials: true,
@@ -48,9 +50,11 @@ async function bootstrap() {
     new LoggingInterceptor(),
   );
 
-  // Swagger Documentation
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup(`${globalPrefix}/docs`, app, document);
+  // Swagger Documentation (Disable in production)
+  if (configService.get<string>('app.env') !== 'production') {
+    const document = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup(`${globalPrefix}/docs`, app, document);
+  }
 
   // Enable graceful shutdown
   app.enableShutdownHooks();

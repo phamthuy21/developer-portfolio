@@ -10,8 +10,21 @@ import { Toaster } from '@/components/ui/sonner';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'IT Developer Portfolio Admin',
-  description: 'Admin dashboard for IT Developer Portfolio',
+  title: {
+    template: '%s | IT Developer Portfolio',
+    default: 'IT Developer Portfolio',
+  },
+  description: 'A premium, modern, and high-performance digital presence showcasing projects, experience, and technical thoughts.',
+  openGraph: {
+    title: 'IT Developer Portfolio',
+    description: 'A premium, modern, and high-performance digital presence showcasing projects, experience, and technical thoughts.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'IT Developer Portfolio',
+    description: 'A premium, modern, and high-performance digital presence showcasing projects, experience, and technical thoughts.',
+  },
 };
 
 export default function RootLayout({

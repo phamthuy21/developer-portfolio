@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { projectSchema, ProjectFormData } from '../schemas/project.schema';
 import { useCreateProject, useUpdateProject } from '../api/project.queries';
@@ -55,7 +55,10 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
     },
   });
 
-  const currentSkills = form.watch('skillIds') || [];
+  const currentSkills = useWatch({ control: form.control, name: 'skillIds' }) || [];
+  const thumbnail = useWatch({ control: form.control, name: 'thumbnail' });
+  const isPublished = useWatch({ control: form.control, name: 'isPublished' });
+  const isFeatured = useWatch({ control: form.control, name: 'isFeatured' });
 
   const onSubmit = async (data: ProjectFormData) => {
     try {
@@ -105,10 +108,10 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
           </div>
           
           <div className="relative w-full max-w-sm aspect-video bg-muted rounded-md overflow-hidden border">
-            {form.watch('thumbnail') ? (
+            {thumbnail ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
-                src={form.watch('thumbnail') as string}
+                src={thumbnail as string}
                 alt="Preview"
                 className="object-cover w-full h-full"
                 onError={(e) => {
@@ -172,7 +175,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
           <div className="flex items-center space-x-2">
             <Checkbox
               id="isPublished"
-              checked={form.watch('isPublished') ?? false}
+              checked={isPublished ?? false}
               onCheckedChange={(checked) => form.setValue('isPublished', checked as boolean)}
             />
             <Label htmlFor="isPublished">Published</Label>
@@ -180,7 +183,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
           <div className="flex items-center space-x-2">
             <Checkbox
               id="isFeatured"
-              checked={form.watch('isFeatured') ?? false}
+              checked={isFeatured ?? false}
               onCheckedChange={(checked) => form.setValue('isFeatured', checked as boolean)}
             />
             <Label htmlFor="isFeatured">Featured</Label>

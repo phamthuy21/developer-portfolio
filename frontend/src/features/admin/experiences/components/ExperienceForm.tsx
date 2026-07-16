@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { experienceSchema, ExperienceFormData } from '../schemas/experience.schema';
 import { useCreateExperience, useUpdateExperience } from '../api/experience.queries';
@@ -60,6 +60,7 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
       toast.error((error as Error).message || 'Failed to save experience');
     }
   };
+  const isCurrent = useWatch({ control: form.control, name: 'isCurrent' });
 
   return (
     <FormProvider {...form}>
@@ -93,7 +94,7 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="endDate">End Date</Label>
-            <Input id="endDate" type="date" {...form.register('endDate')} disabled={form.watch('isCurrent')} />
+            <Input id="endDate" type="date" {...form.register('endDate')} disabled={isCurrent} />
             {form.formState.errors.endDate && <p className="text-red-500 text-xs">{form.formState.errors.endDate.message}</p>}
           </div>
         </div>
@@ -101,7 +102,7 @@ export function ExperienceForm({ initialData }: ExperienceFormProps) {
         <div className="flex items-center space-x-2">
           <Checkbox
             id="isCurrent"
-            checked={form.watch('isCurrent') ?? false}
+            checked={isCurrent ?? false}
             onCheckedChange={(checked) => {
               form.setValue('isCurrent', checked as boolean);
               if (checked) form.setValue('endDate', null);

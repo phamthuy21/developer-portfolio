@@ -7,7 +7,7 @@ import { mapSkillResponse } from '@/lib/utils/map-entities';
 
 export const skillsApi = {
   list: async (params?: { page?: number; limit?: number; search?: string }): Promise<PaginatedResponse<Skill>> => {
-    const response = await apiClient.get<PaginatedResponse<any>>(ENDPOINTS.ADMIN.SKILLS, { params });
+    const response = await apiClient.get<PaginatedResponse<unknown>>(ENDPOINTS.ADMIN.SKILLS, { params });
     return {
       ...response.data,
       data: response.data.data.map(mapSkillResponse),
@@ -15,7 +15,7 @@ export const skillsApi = {
   },
 
   getById: async (id: string): Promise<Skill> => {
-    const response = await apiClient.get<ApiResponse<any>>(`${ENDPOINTS.ADMIN.SKILLS}/${id}`);
+    const response = await apiClient.get<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.SKILLS}/${id}`);
     return mapSkillResponse(response.data.data);
   },
 
@@ -25,7 +25,7 @@ export const skillsApi = {
       category: data.category,
       iconUrl: data.icon || undefined,
     };
-    const response = await apiClient.post<ApiResponse<any>>(ENDPOINTS.ADMIN.SKILLS, payload);
+    const response = await apiClient.post<ApiResponse<unknown>>(ENDPOINTS.ADMIN.SKILLS, payload);
     return mapSkillResponse(response.data.data);
   },
 
@@ -35,7 +35,7 @@ export const skillsApi = {
       category: data.category,
       iconUrl: data.icon || undefined,
     };
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.SKILLS}/${id}`, payload);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.SKILLS}/${id}`, payload);
     return mapSkillResponse(response.data.data);
   },
 

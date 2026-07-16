@@ -26,6 +26,13 @@ class EnvironmentVariables {
   DATABASE_URL: string;
 
   @IsString()
+  @IsOptional()
+  DIRECT_URL?: string;
+
+  @IsString()
+  FRONTEND_URL: string;
+
+  @IsString()
   JWT_SECRET: string;
 
   @IsString()

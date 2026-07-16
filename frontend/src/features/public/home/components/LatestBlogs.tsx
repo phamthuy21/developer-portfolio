@@ -6,7 +6,7 @@ import { SectionTitle } from '@/components/public/SectionTitle';
 import { AnimatedReveal } from '@/components/public/AnimatedReveal';
 import { EmptyState } from '@/components/public/EmptyState';
 import { Blog } from '@/features/admin/blogs/types';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';

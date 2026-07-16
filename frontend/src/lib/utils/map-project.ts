@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Project } from '@/features/admin/projects/types';
 
 export const mapProjectResponse = (p: any): Project => ({

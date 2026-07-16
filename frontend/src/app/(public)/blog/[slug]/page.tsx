@@ -21,7 +21,7 @@ export async function generateStaticParams() {
     return (response?.data || []).map((blog) => ({
       slug: blog.slug,
     }));
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -58,7 +58,7 @@ export async function generateMetadata(props: BlogPageProps): Promise<Metadata> 
         'script:ld+json': JSON.stringify(jsonLd),
       },
     };
-  } catch (error) {
+  } catch {
     return { title: 'Blog Not Found' };
   }
 }
@@ -68,7 +68,7 @@ export default async function BlogDetailPage(props: BlogPageProps) {
   let blog;
   try {
     blog = await getPublicBlogBySlug(params.slug);
-  } catch (error) {
+  } catch {
     // handled by !blog below
   }
 

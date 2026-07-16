@@ -7,7 +7,7 @@ import { mapBlogResponse } from '@/lib/utils/map-entities';
 
 export const blogsApi = {
   list: async (params?: { page?: number; limit?: number; search?: string }): Promise<PaginatedResponse<Blog>> => {
-    const response = await apiClient.get<PaginatedResponse<any>>(ENDPOINTS.ADMIN.BLOGS, { params });
+    const response = await apiClient.get<PaginatedResponse<unknown>>(ENDPOINTS.ADMIN.BLOGS, { params });
     return {
       ...response.data,
       data: response.data.data.map(mapBlogResponse),
@@ -15,7 +15,7 @@ export const blogsApi = {
   },
 
   getById: async (id: string): Promise<Blog> => {
-    const response = await apiClient.get<ApiResponse<any>>(`${ENDPOINTS.ADMIN.BLOGS}/${id}`);
+    const response = await apiClient.get<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.BLOGS}/${id}`);
     return mapBlogResponse(response.data.data);
   },
 
@@ -27,7 +27,7 @@ export const blogsApi = {
       coverImage: data.thumbnail || undefined,
       published: data.isPublished,
     };
-    const response = await apiClient.post<ApiResponse<any>>(ENDPOINTS.ADMIN.BLOGS, payload);
+    const response = await apiClient.post<ApiResponse<unknown>>(ENDPOINTS.ADMIN.BLOGS, payload);
     return mapBlogResponse(response.data.data);
   },
 
@@ -39,7 +39,7 @@ export const blogsApi = {
       coverImage: data.thumbnail || undefined,
       published: data.isPublished,
     };
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.BLOGS}/${id}`, payload);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.BLOGS}/${id}`, payload);
     return mapBlogResponse(response.data.data);
   },
 
@@ -52,12 +52,12 @@ export const blogsApi = {
   },
 
   publish: async (id: string): Promise<Blog> => {
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.BLOGS}/${id}/publish`);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.BLOGS}/${id}/publish`);
     return mapBlogResponse(response.data.data);
   },
 
   unpublish: async (id: string): Promise<Blog> => {
-    const response = await apiClient.patch<ApiResponse<any>>(`${ENDPOINTS.ADMIN.BLOGS}/${id}/unpublish`);
+    const response = await apiClient.patch<ApiResponse<unknown>>(`${ENDPOINTS.ADMIN.BLOGS}/${id}/unpublish`);
     return mapBlogResponse(response.data.data);
   },
 };

@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { pinoLoggerConfig } from './common/logger/pino-logger.config';
 import { validate } from './config/env.validation';
@@ -19,6 +21,7 @@ import { CertificatesModule } from './modules/certificates/certificates.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
@@ -27,6 +30,16 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
       envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
       load: [appConfig, databaseConfig, authConfig],
       validate,
+    }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => [
+        {
+          ttl: config.get('THROTTLE_TTL', 60000),
+          limit: config.get('THROTTLE_LIMIT', 100),
+        },
+      ],
     }),
     LoggerModule.forRoot(pinoLoggerConfig),
     PrismaModule,
@@ -40,8 +53,14 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     MessagesModule,
     AuthModule,
     DashboardModule,
+    HealthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

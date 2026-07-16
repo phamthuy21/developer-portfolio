@@ -43,7 +43,7 @@ export function AnimatedReveal({
       y: 0,
       x: 0,
       transition: {
-        duration: 0.6,
+        duration,
         delay,
         ease: "easeOut" as const,
       },
