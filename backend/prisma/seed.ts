@@ -3,10 +3,10 @@ import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-const ADMIN_EMAIL    = 'admin@portfolio.dev';
-const ADMIN_PASSWORD = 'Admin@123456';
-const ADMIN_FULLNAME = 'Admin User';
-const BCRYPT_ROUNDS  = 10;
+const ADMIN_EMAIL = 'phamthuy2192001@gmail.com';
+const ADMIN_PASSWORD = 'Admin@123456***';
+const ADMIN_FULLNAME = 'PDT';
+const BCRYPT_ROUNDS = 10;
 
 async function main() {
   console.log('Seeding initial reference data...');
@@ -94,4 +94,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
