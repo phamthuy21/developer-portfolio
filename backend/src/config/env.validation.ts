@@ -33,6 +33,10 @@ class EnvironmentVariables {
   FRONTEND_URL: string;
 
   @IsString()
+  @IsOptional()
+  CORS_ORIGINS?: string;
+
+  @IsString()
   JWT_SECRET: string;
 
   @IsString()

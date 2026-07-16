@@ -5,7 +5,7 @@ import { Logger } from 'nestjs-pino';
 import helmet from 'helmet';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import { VersioningType } from '@nestjs/common';
+import { VersioningType, BadRequestException } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from './config/swagger.config';
 import { globalValidationPipe } from './common/pipes/validation.pipe';
@@ -28,11 +28,27 @@ async function bootstrap() {
   // Security & Optimization
   app.use(helmet());
   app.use(cookieParser());
+  const corsOrigins = configService.get<string[]>('app.corsOrigins') || [];
+
   app.enableCors({
-    origin: configService.get<string>('app.frontendUrl'),
+    origin: (
+      origin: string | undefined,
+      callback: (err: Error | null, allow?: boolean) => void,
+    ) => {
+      if (!origin || corsOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(
+        new BadRequestException(
+          `CORS policy restricts access from origin: ${origin}`,
+        ),
+        false,
+      );
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   });
   app.use(compression());
 
