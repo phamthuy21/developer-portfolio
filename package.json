@@ -18,5 +18,5 @@
     "@commitlint/cli": "^19.0.0",
     "@commitlint/config-conventional": "^19.0.0"
   },
-  "packageManager": "pnpm@9.0.0"
+  "packageManager": "pnpm@10.15.0"
 }
