@@ -48,7 +48,7 @@ export default async function ExperiencePage() {
                     <h4 className="text-lg font-medium text-primary mb-4">{exp.company}</h4>
                     
                     <p className="text-muted-foreground">
-                      {exp.description}
+                       <MarkdownRenderer content={exp.description} />
                     </p>
                   </div>
                 </AnimatedReveal>
