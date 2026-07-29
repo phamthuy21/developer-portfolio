@@ -4,6 +4,7 @@ import { Container } from '@/components/public/Container';
 import { Section } from '@/components/public/Section';
 import { AnimatedReveal } from '@/components/public/AnimatedReveal';
 import { getPublicExperiences } from '@/features/public/experiences/api/get-public-experiences';
+import { MarkdownRenderer } from '@/components/common/MarkdownRenderer';
 import { EmptyState } from '@/components/public/EmptyState';
 import { format } from 'date-fns';
 
