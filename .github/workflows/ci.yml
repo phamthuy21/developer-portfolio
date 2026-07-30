@@ -48,9 +48,9 @@ jobs:
           echo "DATABASE_URL=postgresql://postgres:password@localhost:5433/portfolio_test?schema=public" > .env.test
           echo "DIRECT_URL=postgresql://postgres:password@localhost:5433/portfolio_test?schema=public" >> .env.test
           echo "JWT_SECRET=ci-test-secret" >> .env.test
-          echo "JWT_EXPIRATION=15m" >> .env.test
+          echo "JWT_EXPIRES_IN=15m" >> .env.test
           echo "JWT_REFRESH_SECRET=ci-test-refresh-secret" >> .env.test
-          echo "JWT_REFRESH_EXPIRATION=7d" >> .env.test
+          echo "JWT_REFRESH_EXPIRES_IN=7d" >> .env.test
 
       - name: Run Prisma Migrations
         env:
